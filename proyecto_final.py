@@ -98,6 +98,36 @@ class Usuario:
         numero_playlists=len(self.playlists_usuario)
         print(f"{self.playlists_usuario} tiene {numero_playlists} playlists guardadas")
         return numero_playlists
+class Genero:
+    def __init__(self, nombre_genero, descripcion):
+        self.nombre_genero = nombre_genero
+        self.descripcion = descripcion
+        self.canciones_este_genero = []
+
+    def añadir_cancion_a_genero(self, cancion):
+        self.canciones_este_genero.append(cancion)
+        print(f"Canción '{cancion.titulo}' añadida a la categoría {self.nombre_genero}")
+class EstadoAnimo:
+    def __init__(self, tipo_animo, color):
+        self.tipo_animo = tipo_animo
+        self.color = color
+        self.playlists_sugeridas = [] # Lista para guardar objetos de la clase Playlist de Alex
+
+    def asociar_playlist(self, playlist):
+        self.playlists_sugeridas.append(playlist)
+        print(f"La playlist '{playlist.nombre}' ahora se recomienda para cuando estés {self.tipo_animo}")
+class BibliotecaGlobal:
+    total_canciones_biblioteca = 0 # Atributo de clase (como el de Artista de Alex)
+
+    def __init__(self, dueño):
+        self.dueño = dueño
+        self.todas_las_canciones = []
+
+    def registrar_nueva_cancion(self, cancion):
+        self.todas_las_canciones.append(cancion)
+        BibliotecaGlobal.total_canciones_biblioteca += 1
+        print(f"Biblioteca de {self.dueño}: Ahora hay {BibliotecaGlobal.total_canciones_biblioteca} canciones en total")
+
 
 
 
