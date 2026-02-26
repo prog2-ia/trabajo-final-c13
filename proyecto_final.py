@@ -26,6 +26,10 @@ class Album:
         self.reproducciones_album=0
 
     def agrega_cancion(self,cancion):
+        for cancion_existente in self.canciones:
+            if cancion_existente.titulo==cancion.titulo and cancion_existente.artista==cancion.artista:
+                print(f"La canción llamada {cancion.titulo} ya está en el álbum {self.titulo_album}")
+                return
         self.canciones.append(cancion)
         print(f" La canción {cancion} ha sido añadida al álbum {self.titulo_album}")
 
