@@ -38,6 +38,8 @@ cancion7.repros()
 cancion7.repros()
 cancion8.repros()
 
+cancion7.numero_reproducciones()
+
 album1.agrega_cancion(cancion2)
 album1.agrega_cancion(cancion3)
 album2.agrega_cancion(cancion5)
