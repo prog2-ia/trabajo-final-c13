@@ -147,7 +147,7 @@ class EstadoAnimo:
         self.playlists_sugeridas.append(playlist)
         print(f"La playlist '{playlist.nombre}' ahora se recomienda para cuando estés {self.tipo_animo}")
 class BibliotecaGlobal:
-    total_canciones_biblioteca = 0 # Atributo de clase (como el de Artista de Alex)
+    total_canciones_biblioteca = 0
 
     def __init__(self, duenyo):
         self.duenyo = duenyo
