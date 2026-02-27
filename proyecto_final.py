@@ -1,32 +1,5 @@
 #proyecto_final.py
 
-class Cancion:
-    reproducciones=0
-    def __init__(self,titulo,artista,duracion_seg,genero):
-        self.titulo=titulo
-        self.artista=artista
-        self.duracion_seg=duracion_seg
-        self.genero=genero
-        self.reproducciones_cancion=0
-
-    def __str__(self):
-        return f"{self.titulo}"
-
-    def repros(self):
-        self.reproducciones_cancion+=1
-        Cancion.reproducciones+=1
-        print(f"Reproduciendo: {self.titulo}-{self.artista}")
-
-    def numero_reproducciones(self):
-        if self.reproducciones_cancion==1:
-            print(f"Se ha escuchado 1 vez la canción {self.titulo} en toda la plataforma ")
-        else:
-            print(f"Se ha escuchado {self.reproducciones_cancion} veces la canción {self.titulo} en toda la plataforma")
-
-        if Cancion.reproducciones==1:
-            print(f"La plataforma lleva un total de 1 reproducción")
-        else:
-            print(f"La plataforma lleva un total de {Cancion.reproducciones} reproducciones")
 
 class Album:
     def __init__(self,titulo_album,artista,anyo):
@@ -99,45 +72,7 @@ class Artista:
             print(f"{self.nombre} tiene {cantidad_albumes} álbumes en total")
         return cantidad_albumes
 
-class Playlist:
-    def __init__(self,nombre):
-        self.nombre=nombre
-        self.canciones=[]
 
-    def agregar_cancion(self,cancion):
-        self.canciones.append(cancion)
-
-    def contar_canciones(self):
-        cantidad_canciones_playlist=len(self.canciones)
-        print(f"Tu playlist llamada {self.nombre} tiene {cantidad_canciones_playlist} canciones")
-        return cantidad_canciones_playlist
-
-    def mostrar_canciones(self):
-        if len(self.canciones)==0:
-            print(f"No hay canciones en la playlist {self.nombre}")
-        else:
-            print(f"Contenido de la playlist {self.nombre}:")
-            for cancion in self.canciones:
-                print(f"{cancion.titulo}-{cancion.artista}")
-
-    def __str__(self):
-        return f"Playlist {self.nombre} ({len(self.canciones)} canciones)"
-
-class Usuario:
-    def __init__(self,nombre_usuario,nombre_real):
-        self.nombre_usuario=nombre_usuario
-        self.nombre_real=nombre_real
-        self.playlists_usuario=[]
-        self.canciones_escuchadas=0
-
-    def guardar_playlist(self,playlist):
-        self.playlists_usuario.append(playlist)
-        print(f"{self.nombre_usuario} ha guardado la playlist llamada {playlist.nombre}")
-
-    def cantidad_playlists(self):
-        numero_playlists=len(self.playlists_usuario)
-        print(f"{self.nombre_usuario} tiene {numero_playlists} playlists guardadas")
-        return numero_playlists
 class Genero:
     def __init__(self, nombre_genero, descripcion):
         self.nombre_genero = nombre_genero
