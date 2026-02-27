@@ -141,8 +141,7 @@ class EstadoAnimo:
     def __init__(self, tipo_animo, color):
         self.tipo_animo = tipo_animo
         self.color = color
-        self.playlists_sugeridas = [] # Lista para guardar objetos de la clase Playlist de Alex
-
+        self.playlists_sugeridas = []
     def asociar_playlist(self, playlist):
         self.playlists_sugeridas.append(playlist)
         print(f"La playlist '{playlist.nombre}' ahora se recomienda para cuando estés {self.tipo_animo}")
