@@ -91,3 +91,7 @@ usuario2.guardar_playlist(playlist1)
 usuario2.guardar_playlist(playlist2)
 usuario1.cantidad_playlists()
 usuario2.cantidad_playlists()
+
+print(album2)
+print(artista1)
+print(playlist1)

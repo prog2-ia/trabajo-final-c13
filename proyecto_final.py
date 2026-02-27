@@ -51,10 +51,15 @@ class Album:
 
     def reproducir_album(self):
         self.reproducciones_album+=1
+        for cancion in self.canciones:
+            cancion.repros()
         if self.reproducciones_album==1:
             print(f"El álbum {self.titulo_album} tiene 1 reproducción")
         else:
             print(f"El álbum {self.titulo_album} tiene {self.reproducciones_album} reproducciones")
+
+    def __str__(self):
+        return f"{self.titulo_album} ({self.anyo})"
 
 class Artista:
     total_artistas=0
@@ -66,6 +71,9 @@ class Artista:
         self.albumes=[]
         Artista.total_artistas+=1
 
+    def __str__(self):
+        return f"{self.nombre}({self.pais})"
+
     def agregar_canciones(self,cancion):
         self.canciones.append(cancion)
 
@@ -75,7 +83,7 @@ class Artista:
     def total_canciones(self):
         total=0
         for album in self.albumes:
-            total+=album.numero_canciones_album()
+            total+=len(album.canciones)
         total+=len(self.canciones)
         if total==1:
             print(f"{self.nombre} tiene 1 canción en total")
@@ -112,6 +120,9 @@ class Playlist:
             for cancion in self.canciones:
                 print(f"{cancion.titulo}-{cancion.artista}")
 
+    def __str__(self):
+        return f"Playlist {self.nombre} ({len(self.canciones)} canciones)"
+
 class Usuario:
     def __init__(self,nombre_usuario,nombre_real):
         self.nombre_usuario=nombre_usuario
@@ -146,16 +157,16 @@ class EstadoAnimo:
         self.playlists_sugeridas.append(playlist)
         print(f"La playlist '{playlist.nombre}' ahora se recomienda para cuando estés {self.tipo_animo}")
 class BibliotecaGlobal:
-    total_canciones_biblioteca = 0
 
     def __init__(self, duenyo):
         self.duenyo = duenyo
         self.todas_las_canciones = []
+        self.total_canciones_biblioteca = 0
 
     def registrar_nueva_cancion(self, cancion):
         self.todas_las_canciones.append(cancion)
-        BibliotecaGlobal.total_canciones_biblioteca += 1
-        print(f"Biblioteca de {self.duenyo}: Ahora hay {BibliotecaGlobal.total_canciones_biblioteca} canciones en total")
+        self.total_canciones_biblioteca += 1
+        print(f"Biblioteca de {self.duenyo}: Ahora hay {self.total_canciones_biblioteca} canciones en total")
 
 
 
