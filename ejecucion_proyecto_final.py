@@ -95,3 +95,39 @@ usuario2.cantidad_playlists()
 print(album2)
 print(artista1)
 print(playlist1)
+
+
+#prueba de la clase GÉNERO 
+print("\n" + "="*40)
+print("TEST DE LA CLASE GENERO (Lógica de Capacidad)")
+print("="*40)
+
+# 1. Creamos un Género con capacidad para 2 canciones 
+# Esto cumple con definir atributos por el usuario
+mi_genero = Genero("Trap", "Ritmos urbanos de Argentina", capacidad_maxima=2)
+
+# 2. Intentamos añadir canciones
+# Añadir la primera gasta 1 de capacidad
+mi_genero.añadir_cancion_a_genero(cancion1) 
+
+# Añadir la segunda deja el espacio a 0
+mi_genero.añadir_cancion_a_genero(cancion5) 
+
+# 3. Probamos el límite de capacidad 
+# Intentamos añadir una tercera canción: debe saltar el mensaje de ERROR
+print("\nIntentando añadir una tercera canción sin espacio...")
+mi_genero.añadir_cancion_a_genero(cancion7)
+
+# 4. Ampliar capacidad
+print("\nAmpliando capacidad del género...")
+mi_genero.ampliar_capacidad(3)
+
+# 5. Ahora sí podemos añadir las canciones restantes
+mi_genero.añadir_cancion_a_genero(cancion7)
+mi_genero.añadir_cancion_a_genero(cancion8)
+
+# 6. Comprobar el Atributo de Clase (Total global de canciones)
+# Esto muestra cuántas canciones se han registrado en el sistema
+print("\n" + "-"*30)
+Genero.obtener_total_sistema()
+print("-"*30)
