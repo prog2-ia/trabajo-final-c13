@@ -1,4 +1,7 @@
-from proyecto_final import Cancion,Album,Artista,Playlist,Usuario
+from clase_Cancion import Cancion
+from clase_Playlist import Playlist
+from clase_Usuario import Usuario
+from clase_Genero import Genero  
 
 cancion1=Cancion('FULL ICE','YSY A',157,'Trap')
 cancion2=Cancion('Callaita','Bad Bunny',190,'Reggaeton')
@@ -97,37 +100,19 @@ print(artista1)
 print(playlist1)
 
 
-#prueba de la clase GÉNERO 
-print("\n" + "="*40)
-print("TEST DE LA CLASE GENERO (Lógica de Capacidad)")
-print("="*40)
+# --- PRUEBA DE LA CLASE GÉNERO ---
+print("\n--- TEST CLASE GENERO ---")
+# 1. Creamos el objeto
+genero_trap = Genero("Trap", "Bajos potentes y hi-hats rápidos", capacidad_maxima=3)
 
-# 1. Creamos un Género con capacidad para 2 canciones 
-# Esto cumple con definir atributos por el usuario
-mi_genero = Genero("Trap", "Ritmos urbanos de Argentina", capacidad_maxima=2)
+# 2. Usamos el método de instancia para añadir canciones que ya existen en tu prueba
+genero_trap.añadir_cancion_a_genero(cancion1) 
+genero_trap.añadir_cancion_a_genero(cancion5) 
+genero_trap.añadir_cancion_a_genero(cancion7) 
+genero_trap.añadir_cancion_a_genero(cancion8) 
 
-# 2. Intentamos añadir canciones
-# Añadir la primera gasta 1 de capacidad
-mi_genero.añadir_cancion_a_genero(cancion1) 
+# 3. Probamos el método especial __str__
+print(genero_trap) 
 
-# Añadir la segunda deja el espacio a 0
-mi_genero.añadir_cancion_a_genero(cancion5) 
-
-# 3. Probamos el límite de capacidad 
-# Intentamos añadir una tercera canción: debe saltar el mensaje de ERROR
-print("\nIntentando añadir una tercera canción sin espacio...")
-mi_genero.añadir_cancion_a_genero(cancion7)
-
-# 4. Ampliar capacidad
-print("\nAmpliando capacidad del género...")
-mi_genero.ampliar_capacidad(3)
-
-# 5. Ahora sí podemos añadir las canciones restantes
-mi_genero.añadir_cancion_a_genero(cancion7)
-mi_genero.añadir_cancion_a_genero(cancion8)
-
-# 6. Comprobar el Atributo de Clase (Total global de canciones)
-# Esto muestra cuántas canciones se han registrado en el sistema
-print("\n" + "-"*30)
-Genero.obtener_total_sistema()
-print("-"*30)
+# 4. Probamos el método de clase (Total en el sistema)
+print(f"Total de canciones clasificadas por género: {Genero.obtener_total_sistema()}")
