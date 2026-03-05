@@ -65,3 +65,25 @@ class Usuario:
 
         return filtradas
 
+    @classmethod
+    def canciones_saltadas_de_playlist(cls,historial_saltos,playlist):
+        filtradas=[]
+        for cancion,playlist_origen in historial_saltos:
+            if playlist_origen==playlist:
+                filtradas.append(cancion)
+
+        if len(filtradas) == 0:
+            print(f"No hay canciones saltadas de '{playlist.nombre}'")
+        else:
+            print(f"Canciones saltadas de '{playlist.nombre}': {len(filtradas)}")
+            for c in filtradas:
+                print(f"-{c.titulo}-{c.artista}")
+
+        return filtradas
+
+    @classmethod
+    def total_saltos_usuario(cls,historial_saltos):
+        print(f"Total de saltos: {len(historial_saltos)}")
+        return len(historial_saltos)
+
+
