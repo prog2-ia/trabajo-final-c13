@@ -1,7 +1,9 @@
 from clase_Cancion import Cancion
 from clase_Playlist import Playlist
 from clase_Usuario import Usuario
-from clase_Genero import Genero  
+from clase_Genero import Genero
+from clase_Album import Album
+from clase_Artista import Artista
 
 cancion1=Cancion('FULL ICE','YSY A',157,'Trap')
 cancion2=Cancion('Callaita','Bad Bunny',190,'Reggaeton')
