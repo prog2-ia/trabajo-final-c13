@@ -2,6 +2,10 @@ from clase_Cancion import Cancion
 from clase_Playlist import Playlist
 from clase_Usuario import Usuario
 from clase_Genero import Genero  
+from clase_Suscripcion import Suscripcion
+from clase_Dispositivo import Dispositivo
+from clase_Podcast import Podcast
+from clase_Anuncio import Anuncio
 
 cancion1=Cancion('FULL ICE','YSY A',157,'Trap')
 cancion2=Cancion('Callaita','Bad Bunny',190,'Reggaeton')
@@ -116,3 +120,22 @@ print(genero_trap)
 
 # 4. Probamos el método de clase (Total en el sistema)
 print(f"Total de canciones clasificadas por género: {Genero.obtener_total_sistema()}")
+
+
+# 1. Probar Suscripción
+mi_plan = Suscripcion.crear_plan_estudiante() # Usa el classmethod
+print(mi_plan)
+
+# 2. Probar Dispositivo
+mi_movil = Dispositivo("Samsung S24", "Móvil")
+if Dispositivo.es_compatible("Android"): # Usa el staticmethod
+    mi_movil.subir_volumen(20)
+
+# 3. Probar Podcast
+mi_podcast = Podcast("The Wild Project", "Jordi Wild", 300)
+mi_podcast.reproducir_capitulo(50)
+
+# 4. Probar Anuncio
+publicidad = Anuncio("Coca-Cola", 15)
+print(publicidad)
+publicidad.emitir()
