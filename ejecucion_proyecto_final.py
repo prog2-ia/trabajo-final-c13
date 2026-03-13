@@ -1,11 +1,17 @@
 from clase_Cancion import Cancion
 from clase_Playlist import Playlist
 from clase_Usuario import Usuario
+<<<<<<< HEAD
 from clase_Genero import Genero  
 from clase_Suscripcion import Suscripcion
 from clase_Dispositivo import Dispositivo
 from clase_Podcast import Podcast
 from clase_Anuncio import Anuncio
+=======
+from clase_Genero import Genero
+from clase_Album import Album
+from clase_Artista import Artista
+>>>>>>> 19ff70d9617977fa33d5cf330df14a9f2726f414
 
 cancion1=Cancion('FULL ICE','YSY A',157,'Trap')
 cancion2=Cancion('Callaita','Bad Bunny',190,'Reggaeton')
