@@ -1,17 +1,11 @@
 from clase_Cancion import Cancion
 from clase_Playlist import Playlist
 from clase_Usuario import Usuario
-<<<<<<< HEAD
-from clase_Genero import Genero  
-from clase_Suscripcion import Suscripcion
-from clase_Dispositivo import Dispositivo
-from clase_Podcast import Podcast
-from clase_Anuncio import Anuncio
-=======
+
 from clase_Genero import Genero
 from clase_Album import Album
 from clase_Artista import Artista
->>>>>>> 19ff70d9617977fa33d5cf330df14a9f2726f414
+
 
 cancion1=Cancion('FULL ICE','YSY A',157,'Trap')
 cancion2=Cancion('Callaita','Bad Bunny',190,'Reggaeton')
@@ -110,38 +104,52 @@ print(artista1)
 print(playlist1)
 
 
-# --- PRUEBA DE LA CLASE GÉNERO ---
-print("\n--- TEST CLASE GENERO ---")
-# 1. Creamos el objeto
-genero_trap = Genero("Trap", "Bajos potentes y hi-hats rápidos", capacidad_maxima=3)
+from clase_Genero import Genero, ArtistaTrap
+from clase_suscripcion import Suscripcion
+from clase_anuncio import Anuncio
+from clase_dispositivo import Dispositivo
+from clase_podcast import Podcast
 
-# 2. Usamos el método de instancia para añadir canciones que ya existen en tu prueba
-genero_trap.añadir_cancion_a_genero(cancion1) 
-genero_trap.añadir_cancion_a_genero(cancion5) 
-genero_trap.añadir_cancion_a_genero(cancion7) 
-genero_trap.añadir_cancion_a_genero(cancion8) 
+def main():
+    print("PRUEBA DE LA LIBRERÍA MUSICAL")
 
-# 3. Probamos el método especial __str__
-print(genero_trap) 
+    # Probar Clase Dispositivo (Encapsulamiento y Setters)
+    pc = Dispositivo(nombre="PC Salón", tipo="Ordenador")
+    print(pc)
+    pc.subir_volumen(60) 
+    pc.subir_volumen(10)  
+    
+    # Probar Clase Suscripcion (Método de Clase y Abstracción)
+    sub = Suscripcion.crear_plan_estudiante()
+    sub.aplicar_descuento(10) # Prueba del método abstracto implementado
+    print(sub)
 
-# 4. Probamos el método de clase (Total en el sistema)
-print(f"Total de canciones clasificadas por género: {Genero.obtener_total_sistema()}")
+    # Probar Clase Genero y ArtistaTrap (Herencia Múltiple y Polimorfismo)
+    trap = Genero("Trap", capacidad_maxima=2)
+    bad_bunny = ArtistaTrap(
+        nombre="Bad Bunny", 
+        instrumento="Voz", 
+        seguidores=45000000, 
+        red_social="Instagram", 
+        estilo="Latino"
+    )
+    trap.registrar_artista(bad_bunny)
+    print(trap)
 
+    # Probar Clase Podcast (MRO y Herencia Múltiple)
+    mi_podcast = Podcast(titulo="Charlando Tranquilamente", anfitrion="Ibai", capitulos=15)
+    mi_podcast.reproducir()
+    mi_podcast.reproducir_capitulo(1)
+    print(mi_podcast)
 
-# 1. Probar Suscripción
-mi_plan = Suscripcion.crear_plan_estudiante() # Usa el classmethod
-print(mi_plan)
+    # Probar Clase Anuncio (ABC y Estáticos)
+    spoty_ad = Anuncio(patrocinador="Coca-Cola", duracion=20)
+    print(spoty_ad)
+    spoty_ad.reproducir()
+    print(Anuncio.normativa_publicidad()) # Llamada a método estático
 
-# 2. Probar Dispositivo
-mi_movil = Dispositivo("Samsung S24", "Móvil")
-if Dispositivo.es_compatible("Android"): # Usa el staticmethod
-    mi_movil.subir_volumen(20)
+    print("\n--- ✅ PRUEBA FINALIZADA CON ÉXITO ---")
+    print(f"Total artistas registrados en el sistema: {Genero.obtener_total_global()}")
 
-# 3. Probar Podcast
-mi_podcast = Podcast("The Wild Project", "Jordi Wild", 300)
-mi_podcast.reproducir_capitulo(50)
-
-# 4. Probar Anuncio
-publicidad = Anuncio("Coca-Cola", 15)
-print(publicidad)
-publicidad.emitir()
+if __name__ == "__main__":
+    main()
