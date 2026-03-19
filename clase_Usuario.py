@@ -48,6 +48,10 @@ class Usuario:
         saltos_disponibles=self.saltos_maximos-self.saltos_actuales
         print(f"¡Se han recargado los saltos! Ahora tienes {saltos_disponibles} saltos disponibles de {self.saltos_maximos} saltos máximos ")
 
+    def escuchar_cancion(self,cancion):
+        self.canciones_escuchadas+=1
+        cancion.repros()
+
     @classmethod
     def canciones_saltadas_de_artista(cls,historial_saltos,nombre_artista):
         filtradas=[]
@@ -85,5 +89,3 @@ class Usuario:
     def total_saltos_usuario(cls,historial_saltos):
         print(f"Total de saltos: {len(historial_saltos)}")
         return len(historial_saltos)
-
-

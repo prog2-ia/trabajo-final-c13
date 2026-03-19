@@ -1,12 +1,59 @@
-class Artista:
+from abc import ABC,abstractmethod
+from datetime import datetime
+
+class Artista(ABC):
     total_artistas=0
-    def __init__(self,nombre,pais,edad=None):
-        self.nombre=nombre
-        self.pais=pais
-        self.edad=edad
-        self.canciones=[]
-        self.albumes=[]
+    def __init__(self,nombre,pais,edad=None,**kwargs):
+        super().__init__(**kwargs)
+        self.__nombre=nombre
+        self.__pais=pais
+        self.__edad=edad
+        self.__canciones=[]
+        self.__albumes=[]
         Artista.total_artistas+=1
+
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    @property
+    def pais(self):
+        return self.__pais
+
+    @property
+    def edad(self):
+        return self.__edad
+
+    @property
+    def canciones(self):
+        return self.__canciones
+
+    @property
+    def albumes(self):
+        return self.__albumes
+
+    @nombre.setter
+    def nombre(self,valor):
+        if isinstance(valor,str) and len(valor)>0:
+            self.__nombre=valor
+        else:
+            raise ValueError("El nombre debe ser un texto no vacío")
+
+    @pais.setter
+    def pais(self,valor):
+        if isinstance(valor,str) and len(valor)>0:
+            self.__pais=valor
+        else:
+            raise ValueError("El país debe ser un texto no vacío")
+
+    @edad.setter
+    def edad(self,valor):
+        if valor is None:
+            self.__edad=None
+        elif isinstance(valor,int) and valor>0:
+            self.__edad=valor
+        else:
+            raise ValueError("La edad debe ser un número positivo")
 
     def __str__(self):
         return f"{self.nombre}({self.pais})"
@@ -42,43 +89,10 @@ class Artista:
         else:
             return f"{self.nombre} es de {self.pais}"
 
-class ArtistaSolista(Artista):
-    def __init__(self,nombre,pais,edad,fecha_debut):
-        super().__init__(nombre,pais,edad)
-        self.fecha_debut=fecha_debut
-        self.es_banda=False
-
-    def info(self):
-        return f"El artista es '{self.nombre}' empezó su carrera en el año {self.fecha_debut} y es de '{self.pais}'"
-
+    @abstractmethod
     def tipo(self):
-        return "El artista es solista"
+        pass
 
+    @abstractmethod
     def anyos_carrera(self):
-        from datetime import datetime
-        anyos=datetime.now().year-self.fecha_debut
-        return f"{self.nombre} lleva {anyos} años de carrera"
-
-    def anunciar_gira(self,pais_gira,fecha_gira):
-        print(f"¡{self.nombre} anuncia una gira en {pais_gira} en el año {fecha_gira}")
-
-class ArtistaBanda(Artista):
-    def __init__(self,nombre,pais,numero_miembros,fecha_formacion):
-        super().__init__(nombre,pais)
-        self.numero_miembros=numero_miembros
-        self.fecha_formacion=fecha_formacion
-        self.es_banda=True
-
-    def info(self):
-        return f"La banda se llama {self.nombre}, tiene {self.numero_miembros} miembros y se formó en {self.fecha_formacion}"
-
-    def tipo(self):
-        return "Grupo musical"
-
-    def anyos_carrera(self):
-        from datetime import datetime
-        anyos=datetime.now().year-self.fecha_formacion
-        return f"{self.nombre} lleva {anyos} años de carrera"
-
-    def anunciar_gira(self,pais_gira,fecha_gira):
-        print(f"¡{self.nombre} anuncia una gira en {pais_gira} en el año {fecha_gira}")
+        pass
