@@ -236,7 +236,7 @@ def main():
     UsuarioPremium.total_saltos_usuario(usuario_premium.historial_saltos)
 
     # ==========================================================================
-    # SECCIÓN 11: CLASES DE TU COMPAÑERA
+    # SECCIÓN 11
     # ==========================================================================
     print("\n" + "=" * 60)
     print("11. PRUEBA DE CLASES ADICIONALES")
