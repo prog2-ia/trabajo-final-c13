@@ -4,7 +4,8 @@ from clase_Cancion import Cancion
 from clase_Playlist import Playlist
 
 class Usuario:
-    def __init__(self,nombre_usuario,nombre_real):
+    def __init__(self,nombre_usuario,nombre_real,**kwargs):
+        super().__init__(**kwargs)
         self.nombre_usuario=nombre_usuario
         self.nombre_real=nombre_real
         self.playlists_usuario=[]

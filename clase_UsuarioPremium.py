@@ -14,7 +14,7 @@ class UsuarioPremium(Usuario,BeneficiosPremium,Notificaciones):
         return precios.get(self.plan,9.99)
 
     def info_completa(self):
-        return f"{self.nombre_usuario} - Plan {self.plan} - Calidad: {self.calidad_audio} - Precio: {self.precio_mensual}€"
+        print(f"{self.nombre_usuario} - Plan {self.plan} - Calidad: {self.calidad_audio} - Precio: {self.precio_mensual}€")
 
     def precio_con_descuento(self,precio=None):
         if precio is None:

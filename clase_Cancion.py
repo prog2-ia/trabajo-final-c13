@@ -1,6 +1,7 @@
 #clase_Cancion.py
 from abc import ABC,abstractmethod
 class Cancion(ABC):
+    total_canciones_plataforma=0
     reproducciones=0
     def __init__(self,titulo,artista_principal,duracion_seg,genero,**kwargs):
         super().__init__(**kwargs)
@@ -9,6 +10,7 @@ class Cancion(ABC):
         self.__duracion_seg=duracion_seg
         self.__genero=genero
         self.__reproducciones_cancion=0
+        Cancion.total_canciones_plataforma+=1
 
     @property
     def titulo(self):

@@ -1,10 +1,12 @@
 #clase_CancionSolo.py
 from clase_Cancion import Cancion
 class CancionSolo(Cancion):
+    total_canciones_solo=0
     def __init__(self,titulo,artista_principal,duracion_seg,genero,album=None,**kwargs):
         super().__init__(titulo=titulo,artista_principal=artista_principal,duracion_seg=duracion_seg,genero=genero,**kwargs)
         self.__album=album
         self.__numero_artistas=1
+        CancionSolo.total_canciones_solo+=1
 
     @property
     def album(self):
@@ -29,3 +31,8 @@ class CancionSolo(Cancion):
 
     def get_numero_artista(self):
         return 1
+
+    @classmethod
+    def estadisticas_canciones_solo(cls):
+        """Muestra estadísticas de todas las canciones solo registradas."""
+        print(f"\n✓ Canciones Solo registradas: {cls.total_canciones_solo}")

@@ -1,11 +1,13 @@
 #clase_CancionColaboracion.py
 from clase_Cancion import Cancion
 class CancionColaboracion(Cancion):
+    total_canciones_colaboracion=0
     def __init__(self,titulo,artista_principal,duracion_seg,genero,artistas_secundarios,album=None,**kwargs):
         super().__init__(titulo=titulo,artista_principal=artista_principal,duracion_seg=duracion_seg,genero=genero,**kwargs)
         self.__artistas_secundarios=artistas_secundarios
         self.__album=album
         self.__numero_artistas=1+len(artistas_secundarios)
+        CancionColaboracion.total_canciones_colaboracion+=1
 
     @property
     def artistas_secundarios(self):
@@ -46,3 +48,8 @@ class CancionColaboracion(Cancion):
 
     def get_numero_artista(self):
         return f"La cantidad de artistas de la canción es de {self.__numero_artistas}"
+
+    @classmethod
+    def estadisticas_colaboraciones(cls):
+        """Muestra estadísticas de todas las colaboraciones registradas."""
+        print(f"\n✓ Colaboraciones registradas: {cls.total_canciones_colaboracion}")

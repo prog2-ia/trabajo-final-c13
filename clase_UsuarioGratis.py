@@ -21,4 +21,4 @@ class UsuarioGratis(Usuario):
         return False
 
     def info_cuenta(self):
-        return f"Usuario Gratis: {self.nombre_usuario} - Calidad: {self.__calidad_audio}"
+        print(f"Usuario Gratis: {self.nombre_usuario} - Calidad: {self.__calidad_audio} - Anuncios: {self.__tiene_anuncios}")

@@ -35,7 +35,7 @@ class ArtistaBanda(Artista):
             raise ValueError("La fecha de formación debe ser un año válido")
 
     def info(self):
-        return f"La banda se llama {self.nombre}, tiene {self.__numero_miembros} miembros y se formó en {self.fecha_formacion}"
+        print(f"La banda se llama {self.nombre}, tiene {self.__numero_miembros} miembros, se formó en {self.fecha_formacion} y es de {self.pais}")
 
     def tipo(self):
         return "Grupo musical"

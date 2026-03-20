@@ -96,3 +96,8 @@ class Artista(ABC):
     @abstractmethod
     def anyos_carrera(self):
         pass
+
+    @classmethod
+    def estadisticas_artistas(cls):
+        """Muestra estadísticas globales de todos los artistas registrados."""
+        print(f"\n Total de artistas registrados en la plataforma: {cls.total_artistas}")
