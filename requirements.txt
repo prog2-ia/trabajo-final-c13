@@ -1,0 +1,12 @@
+#======================================================================================
+# REQUIREMENTS - SPOTIFY CLON
+#======================================================================================
+#Este proyecto utiliza únicamente la biblioteca estándar de Python.
+#No se requieren paquetes externos.
+
+#Bibliotecas usadas:
+# - abc (Abstract Base Classes) - Incorporada en Python
+# - datetime (Fechas y horas) - Incorporada en Python
+
+#Para ejecutar el proyecto es necesario ejecutar el fichero ejecucion_proyecto_final.py
+#======================================================================================
