@@ -39,7 +39,7 @@ class Suscripcion(Servicio):
         print(f"Suscripción {self.__tipo} cancelada correctamente.")
 
     def aplicar_descuento(self, porcentaje: float):
-        # Implementación del método abstracto heredado de 'Servicio'.
+        # 2Implementación del método abstracto heredado de 'Servicio'.
         # Calcula el nuevo precio restando el porcentaje indicado.
         self.__precio -= self.__precio * (porcentaje / 100)
         print(f"Nuevo precio aplicado tras descuento: {self.__precio:.2f}€")
