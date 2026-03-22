@@ -1,5 +1,5 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/09uckVan)
-# 🎵 Spotify Clon - Biblioteca Musical
+#  Spotify Clon - Biblioteca Musical
 Este proyecto fue desarrollado por Alejandro Navarro y Carla Carreras para la asignatura Programación II de la Universidad de Alicante, curso 2025-2026, bajo la supervisión del profesor Miguel Ángel Teruel Martínez en la parte de teoría y del profesor Matías Díaz Tornero en la parte de prácticas. El código fuente completo está disponible en el repositorio de GitHub del equipo, junto con este archivo de documentación y el archivo de requisitos del proyecto. Cabe aclarar que existen carpetas con archivos de clases que no hemos usado en la ejecución del proyecto por falta de tiempo pero pensamos añadirlas antes de la entrega del trabajo al final del cuatrimestre.
 ## Propósito del Proyecto
 
