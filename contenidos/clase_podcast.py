@@ -1,5 +1,5 @@
-from .clase_ContenidoDigital import ContenidoDigital
-from .clase_MediaPersona import MediaPersona
+from .clase_contenido_digital import ContenidoDigital
+from .clase_mediaPersona import MediaPersona
 
 class Podcast(ContenidoDigital, MediaPersona):
     def __init__(self, titulo: str, anfitrion: str, capitulos: int, **kwargs):
