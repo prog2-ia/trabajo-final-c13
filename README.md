@@ -7,7 +7,6 @@ Este proyecto es una simulación de una plataforma de streaming musical similar 
 
 El sistema permite a los usuarios gestionar una biblioteca musical completa, donde pueden registrar artistas (tanto solistas como bandas), crear canciones (individuales o colaboraciones), organizar álbumes y playlists, y gestionar diferentes tipos de cuentas de usuario con funcionalidades diferenciadas. Además, el proyecto integra funcionalidades adicionales como gestión de dispositivos de reproducción, sistema de suscripciones, podcasts, anuncios y géneros musicales.
 
-Desarrollado por: Alejandro Navarro y Carla Carreras
 
 ---
 
