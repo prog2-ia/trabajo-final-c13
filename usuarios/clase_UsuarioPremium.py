@@ -1,9 +1,9 @@
 # HERENCIA MÚLTIPLE: Usuario + BeneficiosPremium + Notificaciones
 # MRO: UsuarioPremium → Usuario → BeneficiosPremium → Notificaciones → object
 
-from clase_MixinBeneficios import BeneficiosPremium
-from clase_MixinNotificaciones import Notificaciones
-from usuarios.clase_Usuario import Usuario
+from .clase_MixinBeneficios import BeneficiosPremium
+from .clase_MixinNotificaciones import Notificaciones
+from .clase_Usuario import Usuario
 
 
 class UsuarioPremium(Usuario, BeneficiosPremium, Notificaciones):
@@ -30,7 +30,7 @@ class UsuarioPremium(Usuario, BeneficiosPremium, Notificaciones):
 
     def info_completa(self):
         #Muestra información completa de la cuenta Premium.
-        print(f"{self.nombre_usuario} | {self.plan} | {self.calidad_audio} | {self.precio_mensual}€")
+        print(f"{self.nombre_usuario} | {self.plan} | {self.calidad_audio} | {self.precio_mensual:.2f}€")
 
     def precio_con_descuento(self, precio=None):
 
@@ -41,7 +41,7 @@ class UsuarioPremium(Usuario, BeneficiosPremium, Notificaciones):
             precio = self.precio_mensual
 
         final = self.aplicar_descuento(precio)
-        print(f"Base: {precio}€. Con descuento: {final}€")
+        print(f"Base: {precio:.2f}€. Con descuento: {final:.2f}€")
 
     def anyadir_puntos(self, puntos):
         #Añade puntos de fidelidad al usuario.
@@ -76,7 +76,7 @@ class UsuarioPremium(Usuario, BeneficiosPremium, Notificaciones):
 
         print("=" * 50)
         print(f"PREMIUM: {self.nombre_usuario}")
-        print(f"Plan: {self.plan} | Precio: {self.precio_mensual}€")
+        print(f"Plan: {self.plan} | Precio: {self.precio_mensual:.2f}€")
         print(f"Calidad: {self.calidad_audio} | Sin anuncios: {self.sin_publicidad}")
         print(f"Saltos: Ilimitados | Puntos: {self.puntos_fidelidad}")
         print(f"Notificaciones: {self.estado_notificaciones()}")

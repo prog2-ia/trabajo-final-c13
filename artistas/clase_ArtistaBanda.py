@@ -35,10 +35,13 @@ class ArtistaBanda(Artista):
 
     @fecha_formacion.setter
     def fecha_formacion(self, valor):
-        if isinstance(valor, int) and valor > 1900:
+        from datetime import datetime
+        anyo_actual = datetime.now().year
+
+        if isinstance(valor, int) and 1900 < valor <= anyo_actual:
             self.__fecha_formacion = valor
         else:
-            raise ValueError("La fecha de formación debe ser un año válido")
+            raise ValueError(f"La fecha de formación debe estar entre 1900 y {anyo_actual}")
 
     def info(self):
         #SOBRESCRITURA: Muestra numero_miembros (específico de bandas).

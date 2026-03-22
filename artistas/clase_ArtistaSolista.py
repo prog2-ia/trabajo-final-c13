@@ -23,10 +23,13 @@ class ArtistaSolista(Artista):
 
     @fecha_debut.setter
     def fecha_debut(self, valor):
-        if isinstance(valor, int) and valor > 1900:
+        from datetime import datetime
+        anyo_actual = datetime.now().year
+
+        if isinstance(valor, int) and 1900 < valor <= anyo_actual:
             self.__fecha_debut = valor
         else:
-            raise ValueError("La fecha de debut debe ser un año válido")
+            raise ValueError(f"La fecha de debut debe estar entre 1900 y {anyo_actual}")
 
     def info(self):
         #SOBRESCRITURA: Añade fecha_debut (específico de solistas).

@@ -64,7 +64,7 @@ class Suscripcion(Servicio):
         Representación INFORMAL: dirigida al usuario final
         """
         estado = "Activa" if self.__activa else "Inactiva"
-        return f"Plan {self.__tipo}: {self.__precio}€ ({estado})"
+        return f"Plan {self.__tipo}: {self.__precio:.2f}€ ({estado})"
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(tipo='{self.__tipo}', precio={self.__precio})"
@@ -84,7 +84,7 @@ class Suscripcion(Servicio):
         Calcula el nuevo precio
         """
         self.__precio -= self.__precio * (porcentaje / 100)
-        print(f"Nuevo precio aplicado tras descuento: {self.__precio}€")
+        print(f"Nuevo precio aplicado tras descuento: {self.__precio:.2f}€")
 
     # método de clase 
     @classmethod

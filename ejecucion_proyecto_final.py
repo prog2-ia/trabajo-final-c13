@@ -49,7 +49,8 @@ def pedir_entero(mensaje, min_val=None, max_val=None):
     #Valida que el usuario introduzca un número entero dentro del rango.
     while True:
         valor = input(mensaje)
-        if valor.isdigit():
+        #Acepta negativos: comprueba si es dígito o empieza con - y el resto dígitos
+        if valor.isdigit() or (valor.startswith('-') and valor[1:].isdigit()):
             valor = int(valor)
             if min_val is not None and valor < min_val:
                 print(f" El valor debe ser mayor o igual a {min_val}")
@@ -76,18 +77,45 @@ def menu_artistas(biblio):
         opcion = input("Opción: ")
 
         if opcion == "1":
-            # Registrar artista solista
-            nombre = input("Nombre: ")
+            nombre=input("Nombre: ")
+            while len(nombre) == 0:
+                print(" El nombre no puede estar vacío")
+                nombre = input("Nombre: ")
+            # País: comprueba que no esté vacío y que no sea solo números
             pais = input("País: ")
+            while len(pais) == 0 or pais.isdigit():
+                if len(pais) == 0:
+                    print(" El país no puede estar vacío")
+                else:
+                    print(" El país debe ser texto, no un número")
+                pais = input("País: ")
+                while len(pais) == 0 or not any(c.isalpha() for c in pais):
+                    if len(pais) == 0:
+                        print(" El país no puede estar vacío")
+                    else:
+                        print(" El país debe contener al menos una letra")
+                    pais = input("País: ")
             edad = pedir_entero("Edad: ", min_val=0)
-            debut = pedir_entero("Año debut: ", min_val=1900)
+            debut = pedir_entero("Año debut: ", min_val=1900, max_val=2026)
             biblio.artistas.append(ArtistaSolista(nombre, pais, edad, debut))
             print(f" {nombre} registrado")
 
         elif opcion == "2":
             # Registrar banda
+            # Nombre banda: solo valida que no esté vacío
             nombre = input("Nombre banda: ")
+            while len(nombre) == 0:
+                print(" El nombre no puede estar vacío")
+                nombre = input("Nombre banda: ")
+
+            # País: valida que no esté vacío y que tenga al menos una letra
             pais = input("País: ")
+            while len(pais) == 0 or not any(c.isalpha() for c in pais):
+                if len(pais) == 0:
+                    print(" El país no puede estar vacío")
+                else:
+                    print(" El país debe contener al menos una letra")
+                pais = input("País: ")
             miembros = pedir_entero("Miembros: ", min_val=1)
             formacion = pedir_entero("Año formación: ", min_val=1900)
             biblio.artistas.append(ArtistaBanda(nombre, pais, miembros, formacion))
