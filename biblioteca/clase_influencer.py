@@ -1,6 +1,6 @@
 # Importo la base (EntidadMusical) para que este Influencer 
 # siga las mismas reglas que cualquier otro artista del sistema.
-from .clase_Entidad import EntidadMusical
+from .clase_entidad import EntidadMusical
 # está clase es específica para las gente que vive de los seguidores y las redes 
 class Influencer(EntidadMusical):
     def __init__(self, seguidores: int, red_social: str, **kwargs):

@@ -1,7 +1,7 @@
 # Me traigo a los "padres" de esta clase desde sus propios archivos
 # para que la herencia funcione aunque estén separados
-from .clase_Musico import Musico
-from .clase_Influencer import Influencer
+from .clase_musico import Musico
+from .clase_influencer import Influencer
 # Aquí aplico la herencia múltiple: un Artista de Trap es músico e influencer a la vez
 class ArtistaTrap(Musico, Influencer):
     def __init__(self, nombre: str, instrumento: str, seguidores: int, red_social: str, estilo: str):
