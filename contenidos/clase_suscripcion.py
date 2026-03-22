@@ -24,10 +24,10 @@ class Suscripcion(Servicio):
 
     def __str__(self) -> str:
         estado = "Activa" if self.__activa else "Inactiva"
-        return f"Plan {self.__tipo}: {self.__precio}€ ({estado})"
+        return f"Plan {self.__tipo}: {self.__precio:.2f}€ ({estado})"
 
     def __repr__(self) -> str:
-        return f"{type(self).__name__}(tipo='{self.__tipo}', precio={self.__precio})"
+        return f"{type(self).__name__}(tipo='{self.__tipo}', precio={self.__precio:.2f})"
 
     def cancelar_plan(self) -> None:
         self.__activa = False
@@ -35,7 +35,7 @@ class Suscripcion(Servicio):
 
     def aplicar_descuento(self, porcentaje: float):
         self.__precio -= self.__precio * (porcentaje / 100)
-        print(f"Nuevo precio aplicado tras descuento: {self.__precio}€")
+        print(f"Nuevo precio aplicado tras descuento: {self.__precio:.2f}€")
 
     @classmethod
     def crear_plan_estudiante(cls):

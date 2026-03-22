@@ -43,4 +43,4 @@ class CancionSolo(Cancion):
 
     @classmethod
     def estadisticas_canciones_solo(cls):
-        print(f"\n✓ Canciones Solo: {cls.total_canciones_solo}")
+        print(f"\n Canciones Solo: {cls.total_canciones_solo}")

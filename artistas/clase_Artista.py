@@ -109,4 +109,4 @@ class Artista(ABC):
     @classmethod
     def estadisticas_artistas(cls):
         #Método de clase: usa cls (no self) para acceder a variable de clase.
-        print(f"\n✓ Total artistas registrados: {cls.total_artistas}")
+        print(f"\n Total artistas registrados: {cls.total_artistas}")

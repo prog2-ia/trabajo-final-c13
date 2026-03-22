@@ -13,7 +13,7 @@ class Musico(EntidadMusical):
         # es privado el instrumento y solo se pueda gestionar desde 
         # aquí dentro para que nadie lo pueda cambiar por error
         self.__instrumento = instrumento 
-    Uso un decorador @property para que el nombre se pueda leer 
+    #Uso un decorador @property para que el nombre se pueda leer
     # como si fuera un atributo normal, pero de forma controlada.
     @property
     def nombre(self) -> str:

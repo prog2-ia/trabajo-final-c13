@@ -58,4 +58,4 @@ class CancionColaboracion(Cancion):
 
     @classmethod
     def estadisticas_colaboraciones(cls):
-        print(f"\n✓ Colaboraciones: {cls.total_canciones_colaboracion}")
+        print(f"\n Colaboraciones: {cls.total_canciones_colaboracion}")

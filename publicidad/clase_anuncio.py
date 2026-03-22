@@ -17,7 +17,11 @@ class Anuncio(ContenidoReproducible):
     @duracion.setter
     def duracion(self, valor: int):
         if isinstance(valor, int) and valor > 0:
-            self.__duracion = valor
+            if valor > 30:
+                self.__duracion = 30
+                print(" La duración máxima es 30 segundos. Ajustado a 30.")
+            else:
+                self.__duracion = valor
         else:
             print("Error: La duración del anuncio debe ser un entero positivo.")
 

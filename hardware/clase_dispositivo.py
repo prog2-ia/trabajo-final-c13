@@ -33,9 +33,9 @@ class Dispositivo(Hardware):
     def conectar(self) -> None:
         print(f"Sincronizando {self.__nombre} con la librería musical...")
 
-    def subir_volumen(self, incremento: int) -> None:
+    def subir_volumen(self, valor: int) -> None:
         # Aquí usamos el setter para que valide automáticamente el rango 0-100
-        self.volumen = self.__volumen + incremento 
+        self.volumen = valor
         print(f"Volumen en {self.__nombre} ajustado al {self.__volumen}%")
 
     @staticmethod

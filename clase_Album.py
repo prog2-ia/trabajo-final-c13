@@ -22,7 +22,7 @@ class Album:
                 print(f"La canción {cancion.titulo} ya está en el álbum")
                 return
         self.canciones.append(cancion)
-        print(f"✓ {cancion.titulo} añadida al álbum {self.titulo_album}")
+        print(f" {cancion.titulo} añadida al álbum {self.titulo_album}")
 
     def numero_canciones_album(self):
         print(f"El álbum {self.titulo_album} tiene {len(self.canciones)} canciones")
