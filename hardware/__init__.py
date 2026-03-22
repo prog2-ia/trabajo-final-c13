@@ -1,1 +1,1 @@
-from .clase_Dispositivo import Dispositivo
+from .clase_dispositivo import Dispositivo

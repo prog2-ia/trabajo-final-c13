@@ -1,4 +1,4 @@
-from .clase_Servicio import Servicio
+from .clase_servicio import Servicio
 
 class Suscripcion(Servicio):
     def __init__(self, tipo: str, precio: float, **kwargs):

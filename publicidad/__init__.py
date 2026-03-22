@@ -1,1 +1,1 @@
-from .clase_Anuncio import Anuncio
+from .clase_anuncio import Anuncio

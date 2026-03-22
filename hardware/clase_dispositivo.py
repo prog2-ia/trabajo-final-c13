@@ -1,4 +1,4 @@
-from .clase_Hardware import Hardware
+from .clase_hardware import Hardware
 
 class Dispositivo(Hardware):
     def __init__(self, nombre: str, tipo: str, **kwargs):

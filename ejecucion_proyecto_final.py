@@ -13,13 +13,10 @@ from usuarios.clase_UsuarioGratis import UsuarioGratis
 from usuarios.clase_UsuarioPremium import UsuarioPremium
 from artistas.clase_Artista import Artista
 from canciones.clase_Cancion import Cancion
-
-# Importación de clases (compañera)
-from clase_dispositivo import Dispositivo
-from clase_suscripcion import Suscripcion
-from clase_podcast import Podcast
-from clase_anuncio import Anuncio
-
+from hardware.clase_dispositivo import Dispositivo
+from contenidos.clase_suscripcion import Suscripcion
+from contenidos.clase_podcast import Podcast
+from publicidad.clase_anuncio import Anuncio
 
 # =============================================================================
 # CLASE CONTENEDORA: Gestiona todos los datos del sistema

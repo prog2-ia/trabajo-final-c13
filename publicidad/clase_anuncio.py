@@ -1,4 +1,4 @@
-from .clase_Contenido import ContenidoReproducible
+from .clase_contenido import ContenidoReproducible
 
 class Anuncio(ContenidoReproducible):
     def __init__(self, patrocinador: str, duracion: int, **kwargs):
