@@ -31,6 +31,25 @@ class CancionSolo(Cancion):
         else:
             raise ValueError("El álbum debe ser None o texto")
 
+    def __str__(self):
+        if self.album:
+            return f"'{self.titulo}' de {self.artista_principal.nombre} ({self.album})"
+        return f"{self.titulo} de {self.artista_principal.nombre} (Single)"
+
+    def __repr__(self):
+        return f"CancionSolo(titulo='{self.titulo}', artista='{self.artista_principal.nombre}',duracion={self.duracion_seg}s)"
+
+    def __eq__(self, otra):
+        if not isinstance(otra,Cancion):
+            return False
+        return (self.titulo.lower() == otra.titulo.lower() and
+                self.artista_principal == otra.artista_principal)
+
+    def __lt__(self,otra):
+        if not isinstance(otra,Cancion):
+            return NotImplemented
+        return self.duracion_seg < otra.duracion_seg
+
     def info(self):
         #SOBRESCRITURA: Muestra 1 artista (polimorfismo vs Colaboración).
         if self.album:

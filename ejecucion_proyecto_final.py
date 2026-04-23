@@ -288,11 +288,15 @@ def menu_canciones(biblio):
 
         elif opcion == "3":
             # Muestra todas las canciones (solo y colab con formato diferente)
-            for c in biblio.canciones_solo:
-                print(f" {c.titulo} - {c.artista_principal.nombre}")
-            for c in biblio.canciones_colab:
-                nombres = ", ".join([a.nombre for a in c.artistas_secundarios])
-                print(f" {c.titulo} - {c.artista_principal.nombre} ft. {nombres}")
+            if biblio.canciones_solo or biblio.canciones_colab:
+                print("\n--- Canciones Solo ---")
+                for c in biblio.canciones_solo:
+                    print(f"{c}")
+                print("\n--- Canciones Colab ---")
+                for c in biblio.canciones_colab:
+                    print(f"{c}")
+            else:
+                print("No hay canciones registradas")
 
         elif opcion == "4":
             continuar = False
@@ -411,8 +415,18 @@ def menu_playlists(biblio):
 
         elif opcion == "3":
             # Muestra contenido de todas las playlists
-            for p in biblio.playlists:
-                p.mostrar_canciones()
+            if biblio.playlists:
+                for p in biblio.playlists:
+                    print(f"\n {p}")
+                    print(f"Total canciones: {len(p)}")
+                    print("Lista:")
+                    for i, cancion in enumerate(p,1):
+                        print(f"{i}. {cancion}")
+                    if len(p) > 0:
+                        print(f" Primera canción: {p[0].titulo}")
+            else:
+                print("No hay playlists registradas")
+
 
         elif opcion == "4":
             continuar = False
@@ -511,6 +525,26 @@ def menu_estadisticas(biblio):
     print(f" Usuarios: {len(biblio.usuarios)}")
     print(f" Reproducciones: {Cancion.reproducciones}")
 
+    if len(biblio.canciones_solo)>1:
+        print(f"\n Canciones Solo ordenadas por duración (menor a mayor):")
+        canciones_ordenadas = sorted(biblio.canciones_solo)
+        for c in canciones_ordenadas:
+            print(f"{c.titulo}: {c.duracion_seg}s")
+
+    if biblio.playlists and biblio.canciones_solo:
+        p_ref=biblio.playlists[0]
+        c_ref=biblio.canciones_solo[0]
+        if c_ref in p_ref:
+            print(f"\n'{c_ref.titulo}' está en '{p_ref.nombre}'")
+        else:
+            print(f"\n'{c_ref.titulo}' no está en '{p_ref.nombre}'")
+
+    if len(biblio.canciones_solo) >= 2:
+        c1, c2 = biblio.canciones_solo[0], biblio.canciones_solo[1]
+        if c1 == c2:
+            print(f"\n Las dos primeras canciones son idénticas (mismo título y artista)")
+
+
 
 def menu_adicionales():
     # Menú que incluye: Dispositivo, Suscripción, Podcast, Anuncio.
@@ -585,6 +619,15 @@ def main():
             menu_estadisticas(biblio)
         elif opcion == "8":
             menu_adicionales()
+        elif opcion == "9":
+            if len(biblio.playlists) >= 2:
+                p1,p2 = biblio.playlists[0], biblio.playlists[1]
+                p_fusion = p1 + p2
+                biblio.playlists.append(p_fusion)
+                print(f"\n Fusionadas: '{p1.nombre}' + '{p2.nombre}' = '{p_fusion.nombre}'")
+                print(f"Total canciones resultantes: {len(p_fusion)}")
+            else:
+                print("Necesitas al menos 2 playlists para fusionar")
         elif opcion == "0":
             continuar = False
             print("\n ¡Gracias!")

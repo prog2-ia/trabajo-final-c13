@@ -30,6 +30,25 @@ class Playlist:
         #Representación en texto de la playlist.
         return f"Playlist '{self.nombre}' ({len(self.canciones)} canciones)"
 
+    def __repr__(self):
+        return f"Playlist(nombre='{self.nombre}', canciones={len(self.canciones)})"
+
+    def __len__(self):
+        return len(self.canciones)
+
+    def __contains__(self,cancion):
+        return cancion in self.canciones
+
+    def __getitem__(self,indice):
+        return self.canciones[indice]
+
+    def __add__(self,otra):
+        if not isinstance(otra, Playlist):
+            return NotImplemented
+        nueva=Playlist(f"{self.nombre} + {otra.nombre}")
+        nueva.canciones=self.canciones + otra.canciones
+        return nueva
+
     def reproducir(self, usuario):
 
         #Reproducción interactiva (escuchar/saltar/salir).
@@ -50,9 +69,9 @@ class Playlist:
         continuar = True
         indice = 0
 
-        while continuar and indice < len(self.canciones):
-            cancion = self.canciones[indice]
-            print(f"\n--- {indice + 1}/{len(self.canciones)}: {cancion.titulo} ---")
+        while continuar and indice < len(self):
+            cancion = self[indice]
+            print(f"\n--- {indice + 1}/{len(self)}: {cancion.titulo} ---")
 
             # Muestra saltos disponibles (Ilimitados para Premium)
             if usuario.saltos_maximos == float('inf'):
@@ -86,5 +105,5 @@ class Playlist:
             else:
                 print(" Opción no válida")
 
-        if indice >= len(self.canciones):
+        if indice >= len(self):
             print("\n Playlist completada")
