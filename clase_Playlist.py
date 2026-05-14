@@ -49,6 +49,20 @@ class Playlist:
         nueva.canciones=self.canciones + otra.canciones
         return nueva
 
+    def __iadd__(self,cancion):
+        from canciones.clase_Cancion import Cancion
+        if not isinstance(cancion, Cancion):
+            return self  #Si no es una canción, no hace nada
+
+        #Evitamos duplicados con un bucle simple
+        for existente in self.canciones:
+            if existente.titulo.lower()==cancion.titulo.lower():
+                return self #Ya existe,salimos
+
+        self.canciones.append(cancion)
+        return self #Obligatorio para que += funcione
+
+
     def reproducir(self, usuario):
 
         #Reproducción interactiva (escuchar/saltar/salir).

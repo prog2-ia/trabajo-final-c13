@@ -72,6 +72,19 @@ class Artista(ABC):
     def __str__(self):
         return f"{self.nombre}({self.pais})"
 
+    def __add__(self, otro):
+        #artista1 + artista2 → string de colaboración
+        if not isinstance(otro, Artista):
+            return str(self)
+        return f"{self.nombre} + {otro.nombre} -> Colaboración pendiente"
+
+    def __eq__(self, otro):
+        #Dos artistas son iguales si coinciden nombre y país
+        if not isinstance(otro, Artista):
+            return False
+        return (self.nombre.lower() == otro.nombre.lower() and
+                self.pais.lower() == otro.pais.lower())
+
     def agregar_canciones(self, cancion):
         self.canciones.append(cancion)
 

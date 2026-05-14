@@ -17,6 +17,7 @@ class Usuario:
         self.saltos_maximos = 6  # Gratis: 6 saltos | Premium: float('inf')
         self.saltos_actuales = 0
         self.historial_saltos = []
+        self.historial_canciones=[]
 
     def guardar_playlist(self, playlist):
         #Añade una playlist a las guardadas por el usuario.
@@ -65,6 +66,14 @@ class Usuario:
         #Registra reproducción: actualiza contador usuario Y de la canción.
         self.canciones_escuchadas += 1
         cancion.repros()
+        self.historial_canciones.append(cancion)
+
+    def reproducir_playlist(self, playlist):
+        #Delega reproducción a playlist (invierte dirección de llamada).
+        playlist.reproducir(self)
+
+    def cancion_mas_larga_escuchada(self):
+
 
     @classmethod
     def canciones_saltadas_de_artista(cls, historial, nombre_artista):
@@ -86,6 +95,3 @@ class Usuario:
         print(f"Total saltos: {len(historial)}")
         return len(historial)
 
-    def reproducir_playlist(self, playlist):
-        #Delega reproducción a playlist (invierte dirección de llamada).
-        playlist.reproducir(self)

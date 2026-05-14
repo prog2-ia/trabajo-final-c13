@@ -35,5 +35,39 @@ class Album:
             cancion.repros()
         print(f"Álbum reproducido {self.reproducciones_album} veces")
 
+    def cancion_mas_larga(self):
+        #Devuelve la canción más larga del álbum usando operadores de sobrecarga
+        if not self.canciones:
+            return None
+
+        #Empezamos con la primera como candidata
+        mas_larga=self.canciones[0]
+
+        #Recorremos el resto comparando con > (usa __gt__ de Cancion)
+        for cancion in self.canciones[1:]:
+            if cancion>mas_larga: #Aquí usamos __gt__ explícitamente
+                mas_larga=cancion
+        return mas_larga
+
+
     def __str__(self):
         return f"{self.titulo_album} ({self.anyo})"
+
+    def __add__(self,otro_album):
+        if not isinstance(otro_album, Album):
+            return self
+
+        nuevo_titulo=f"{self.titulo_album} + {otro_album.titulo_album}"
+        nuevo= Album(nuevo_titulo, self.artista, max(self.anyo,otro_album.anyo))
+        nuevo.canciones=self.canciones.copy()
+
+        for c in otro_album.canciones:
+            repetida=False
+            for existente in nuevo.canciones:
+                if existente.titulo.lower() == c.titulo.lower():
+                    repetida=True
+                    break
+            if not repetida:
+                nuevo.canciones.append(c)
+
+        return nuevo

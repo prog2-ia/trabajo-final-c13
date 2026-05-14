@@ -66,6 +66,21 @@ class Cancion(ABC):
     def __str__(self):
         return self.__titulo
 
+    def __eq__(self,otra):
+        if not isinstance(otra,Cancion):
+            return False
+        return self.titulo.lower()==otra.titulo.lower()
+
+    def __lt__(self,otra):
+        if not isinstance(otra,Cancion):
+            return NotImplemented
+        return self.duracion_seg<otra.duracion_seg
+
+    def __gt__(self,otra):
+        if not isinstance(otra, Cancion):
+            return NotImplemented #Le dice a Python: "no puedo comparar estos tipos"
+        return self.duracion_seg > otra.duracion_seg
+
     def repros(self):
         #Incrementa DOS contadores: individual (esta canción) + global (plataforma).
         self.__reproducciones_cancion += 1
