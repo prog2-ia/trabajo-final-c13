@@ -265,7 +265,24 @@ def menu_playlists(biblio):
                 p.mostrar_canciones()
 
         elif opcion == "4":
-            continuar = False
+            if len(biblio.playlists) < 2:
+                print("Necesitas al menos 2 playlists para fusionar")
+                continue
+            print("\n--- Playlists disponibles ---")
+            for i, p in enumerate(biblio.playlists):
+                print(f"{i}. {p.nombre} ({len(p.canciones)} canciones)")
+            i1=pedir_entero("Índice Playlist 1: ",0,len(biblio.playlists)-1)
+            i2=pedir_entero("Índice Playlist 2: ",0,len(biblio.playlists)-1)
+            if i1==i2:
+                print("Selecciona dos playlists diferentes")
+                continue
+
+            fusion=biblio.playlists[i1]+biblio.playlists[i2]
+            biblio.playlists.append(fusion)
+            print(f" Fusión creada: '{fusion.nombre}' ({len(fusion.canciones)} canciones)")
+
+        elif opcion == "5":
+            continuar=False
 
 
 def menu_usuarios(biblio):
@@ -314,6 +331,33 @@ def menu_usuarios(biblio):
                 biblio.usuarios[idx_u].guardar_playlist(biblio.playlists[idx_p])
 
         elif opcion == "5":
+            #Estadísticas personales del usuario
+            if not biblio.usuarios:
+                print(" No hay usuarios registrados")
+                continue
+
+            idx=pedir_entero("Selecciona usuario:",0,len(biblio.usuarios)-1)
+            usuario=biblio.usuarios[idx]
+
+            print(f"|n--- Estadísticas de {usuario.nombre_usuario} ---")
+            print(f" Total canciones escuchadas: {usuario.canciones_escuchadas}")
+            print(f" Saltos realizados: {len(usuario.historial_saltos)}")
+
+            #Canción más larga (usa operador >)
+            mas_larga=usuario.cancion_mas_larga_escuchada()
+            if mas_larga:
+                print(f"Tu canción más larga: '{mas_larga.titulo}'")
+            else:
+                print("Aún no has escuchado canciones")
+
+            #Canción más repetida
+            cancion_rep,veces=usuario.cancion_mas_escuchada()
+            if cancion_rep:
+                print(f" Tu canción más repetida: '{cancion_rep.titulo}' ({veces} veces)")
+            else:
+                print("Aún no has repetido ninguna canción")
+
+        elif opcion == "6":
             continuar = False
 
 

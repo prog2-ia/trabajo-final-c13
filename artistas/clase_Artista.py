@@ -48,26 +48,28 @@ class Artista(ABC):
     # SETTERS: Validación antes de modificar (integridad de datos)
     @nombre.setter
     def nombre(self, valor):
-        if isinstance(valor, str) and len(valor) > 0:
-            self.__nombre = valor
-        else:
-            raise ValueError("El nombre debe ser un texto no vacío")
+        from excepciones import ValorInvalidoError
+        if not isinstance(valor,str) or len(valor.strip()) == 0:
+            raise ValorInvalidoError("nombre",valor,"debe ser un texto no vacío")
+        self.__nombre = valor
 
     @pais.setter
     def pais(self, valor):
-        if isinstance(valor, str) and len(valor) > 0:
-            self.__pais = valor
-        else:
-            raise ValueError("El país debe ser un texto no vacío")
+        from excepciones import ValorInvalidoError
+        if not isinstance(valor, str) or len(valor.strip()) == 0:
+            raise ValorInvalidoError("país",valor,"debe ser un texto no vacío")
+        self.__pais = valor
 
     @edad.setter
     def edad(self, valor):
+        from excepciones import ValorInvalidoError
         if valor is None:
             self.__edad = None
-        elif isinstance(valor, int) and valor > 0:
-            self.__edad = valor
-        else:
-            raise ValueError("La edad debe ser un número positivo")
+        elif not isinstance(valor,int):
+            raise ValorInvalidoError("edad",valor, "debe ser un número entero")
+        elif valor < 0 or valor > 110:
+            raise ValorInvalidoError("edad",valor,"debe estar entre 0 y 110 años")
+        self.__edad = valor
 
     def __str__(self):
         return f"{self.nombre}({self.pais})"

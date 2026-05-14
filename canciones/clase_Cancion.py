@@ -44,24 +44,29 @@ class Cancion(ABC):
     # SETTERS: Validación de datos
     @titulo.setter
     def titulo(self, valor):
-        if isinstance(valor, str) and len(valor) > 0:
-            self.__titulo = valor
-        else:
-            raise ValueError("El título debe ser texto no vacío")
+        if not isinstance(valor, str) or len(valor.strip()) == 0:
+            from excepciones import ValorInvalidoError
+            raise ValorInvalidoError("título",valor,"debe ser un texto no vacío")
+        self.__titulo=valor
 
     @duracion_seg.setter
-    def duracion_seg(self, valor):
-        if isinstance(valor, int) and valor > 0:
-            self.__duracion_seg = valor
-        else:
-            raise ValueError("La duración debe ser positiva")
+    def duracion_seg(self,valor):
+        from excepciones import ValorInvalidoError
+        if not isinstance(valor, int):
+            raise ValorInvalidoError("duración",valor,"debe ser un número entero")
+        if valor <= 0:
+            raise ValorInvalidoError("duración", valor, "debe ser mayor que 0")
+        if valor > 25200:  #Máximo 7 horas
+            raise ValorInvalidoError("duración",valor,"no puede superar las 7 horas (25200s)")
+        self.__duracion_seg=valor
+
 
     @genero.setter
-    def genero(self, valor):
-        if isinstance(valor, str) and len(valor) > 0:
-            self.__genero = valor
-        else:
-            raise ValueError("El género debe ser texto no vacío")
+    def genero(self,valor):
+        from excepciones import ValorInvalidoError
+        if not isinstance(valor, str) or len(valor.strip()) == 0:
+            raise ValorInvalidoError("género", valor, "debe ser un texto no vacío")
+        self.__genero=valor
 
     def __str__(self):
         return self.__titulo

@@ -40,19 +40,39 @@ class Playlist:
         return cancion in self.canciones
 
     def __getitem__(self,indice):
-        return self.canciones[indice]
+        #Permite:p playlist[indice] con manejo de IndexError
+        try:
+            return self.canciones[indice]
+        except IndexError:
+            from excepciones import RecursoNoEncontradoError
+            raise RecursoNoEncontradoError("canción en índice", indice)
 
     def __add__(self,otra):
+        #Playlist + Playlist -> nueva playlist combinada
+        from excepciones import RecursoNoEncontradoError
         if not isinstance(otra, Playlist):
-            return NotImplemented
-        nueva=Playlist(f"{self.nombre} + {otra.nombre}")
-        nueva.canciones=self.canciones + otra.canciones
+            from excepciones import ValorInvalidoError
+            raise ValorInvalidoError("playlist",type(otra).__name__,"debe ser un objeto Playlist")
+
+        nueva = Playlist(f"{self.nombre} + {otra.nombre}")
+        nueva.canciones = self.canciones.copy() + otra.canciones.copy()
         return nueva
 
     def __iadd__(self,cancion):
         from canciones.clase_Cancion import Cancion
+        from excepciones import CancionDuplicadaError
+
         if not isinstance(cancion, Cancion):
-            return self  #Si no es una canción, no hace nada
+            from excepciones import ValorInvalidoError
+            raise ValorInvalidoError("canción",type(cancion).__name__,"debe ser un objeto Cancion")
+
+        #Verificar duplicados
+        for existente in self.canciones:
+            if existente.titulo.lower() == cancion.titulo.lower():
+                raise CancionDuplicadaError(cancion.titulo,f"la playlist '{self.nombre}'")
+
+        self.canciones.append(cancion)
+        return self
 
         #Evitamos duplicados con un bucle simple
         for existente in self.canciones:

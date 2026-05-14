@@ -73,6 +73,38 @@ class Usuario:
         playlist.reproducir(self)
 
     def cancion_mas_larga_escuchada(self):
+        #Usa el operador > (__gt__) para encontrar la canción más larga del historial del usuario
+        if not self.historial_canciones:
+            return None
+
+        mas_larga=self.historial_canciones[0]
+        for c in self.historial_canciones[1:]:
+            if c>mas_larga:
+                mas_larga=c
+        return mas_larga
+
+    def cancion_mas_escuchada(self):
+        #Encuentra la canción más escuchada para cada usuario
+        if not self.historial_canciones:
+            return None,0
+
+        #Contador manual (sin importar librerías externas)
+        contador={}
+        for c in self.historial_canciones:
+            clave=c.titulo.lower()
+            contador[clave]=contador.get(clave,0)+1
+
+        max_titulo=max(contador,key=contador.get)
+        max_veces=contador[max_titulo]
+
+        #Buscar la canción original con bucle for (más claro)
+        for c in self.historial_canciones:
+            if c.titulo==max_titulo:
+                return c,max_veces
+
+        #Por seguridad, aunque nunca debería llegar aquí
+        return None,max_veces
+
 
 
     @classmethod
