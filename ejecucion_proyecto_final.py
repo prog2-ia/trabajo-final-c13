@@ -403,7 +403,7 @@ def menu_artistas(biblio):
                 print(f"{nombre} registrado")
 
             except ArtistaDuplicadoError as e:
-                print(f" {e}")
+                print(f" {e} ya fue registrado en la lista")
             except ValorInvalidoError as e:
                 print(f"Error de validación:{e}")
             except Exception as e:
@@ -472,33 +472,39 @@ def menu_canciones(biblio):
             for i, a in enumerate(biblio.artistas):
                 print(f"{i}. {a.nombre}")
 
-            idx = pedir_entero("Selecciona artista: ", min_val=0, max_val=len(biblio.artistas) - 1)
-            titulo = input("Título: ")
-            duracion = pedir_entero("Duración (seg): ", min_val=1)
-            genero = input("Género: ")
-            album_nombre = input("Álbum (opcional): ").strip()
+            try:
+                idx = pedir_entero("Selecciona artista: ", min_val=0, max_val=len(biblio.artistas) - 1)
+                titulo = input("Título: ")
+                for c in biblio.canciones_solo:
+                    if c.titulo.lower() == titulo.lower():
+                        raise CancionDuplicadaError(titulo,"la biblioteca")
+                duracion = pedir_entero("Duración (seg): ", min_val=1)
+                genero = input("Género: ")
+                album_nombre = input("Álbum (opcional): ").strip()
 
-            album_obj=None
-            if album_nombre:
-                #Buscamos si este álbum ya existe
-                album_obj = next((alb for alb in biblio.albumes if alb.titulo_album.lower()==album_nombre.lower()
-                                  and alb.artista==biblio.artistas[idx]), None)
+                album_obj=None
+                if album_nombre:
+                    #Buscamos si este álbum ya existe
+                    album_obj = next((alb for alb in biblio.albumes if alb.titulo_album.lower()==album_nombre.lower()
+                                      and alb.artista==biblio.artistas[idx]), None)
 
-            #Si no existe, lo creamos automáticamente
-            if not album_obj:
-                anyo_actual=2026
-                album_obj=Album(album_nombre,biblio.artistas[idx],anyo_actual)
-                biblio.albumes.append(album_obj)
-                print(f"Álbum '{album_nombre}' creado automáticamente")
+                #Si no existe, lo creamos automáticamente
+                if not album_obj:
+                    anyo_actual=2026
+                    album_obj=Album(album_nombre,biblio.artistas[idx],anyo_actual)
+                    biblio.albumes.append(album_obj)
+                    print(f"Álbum '{album_nombre}' creado automáticamente")
 
-            cancion=CancionSolo(titulo,biblio.artistas[idx],duracion,genero,album_obj)
-            biblio.canciones_solo.append(cancion)
+                cancion=CancionSolo(titulo,biblio.artistas[idx],duracion,genero,album_obj)
+                biblio.canciones_solo.append(cancion)
 
             #Añadimos canción al álbum si existe
-            if album_obj:
-                album_obj.agrega_cancion(cancion)
+                if album_obj:
+                    album_obj.agrega_cancion(cancion)
 
-            print(f"'{titulo}' de {biblio.artistas[idx].nombre} registrada")
+                print(f"'{titulo}' de {biblio.artistas[idx].nombre} registrada")
+            except CancionDuplicadaError as e:
+                print(f" La canción {e} ya ha sido registrada en la biblioteca")
 
         elif opcion == "2":
             # Colaboración: artista principal + secundarios (lista)
@@ -510,34 +516,44 @@ def menu_canciones(biblio):
             for i, a in enumerate(biblio.artistas):
                 print(f"{i}. {a.nombre}")
 
-            idx_principal = pedir_entero("Selecciona artista principal: ", min_val=0, max_val=len(biblio.artistas) - 1)
-            titulo = input("Título: ")
-            duracion = pedir_entero("Duración (seg): ", min_val=1)
-            genero = input("Género: ")
+            try:
+                idx_principal = pedir_entero("Selecciona artista principal: ", min_val=0, max_val=len(biblio.artistas) - 1)
+                titulo = input("Título: ")
+                for c in biblio.canciones_colab:
+                    if c.titulo.lower() == titulo.lower():
+                        raise CancionDuplicadaError(titulo,"la biblioteca")
 
-            # Bucle para añadir múltiples artistas secundarios
-            print("\n--- Selecciona artistas secundarios (escribe -1 para terminar) ---")
-            secundarios = []
-            continuar_secundarios = True
-            while continuar_secundarios:
-                for i, a in enumerate(biblio.artistas):
-                    if biblio.artistas[i] != biblio.artistas[idx_principal]:
-                        print(f"{i}. {a.nombre}")
-                print("-1. Terminar selección")
+                duracion = pedir_entero("Duración (seg): ", min_val=1)
+                genero = input("Género: ")
 
-                idx_sec = pedir_entero("Artista secundario: ", min_val=-1, max_val=len(biblio.artistas) - 1)
-                if idx_sec == -1:
-                    continuar_secundarios = False
-                elif idx_sec == idx_principal:
-                    print(" El artista principal no puede ser secundario")
-                else:
-                    secundarios.append(biblio.artistas[idx_sec])
+                # Bucle para añadir múltiples artistas secundarios
+                print("\n--- Selecciona artistas secundarios (escribe -1 para terminar) ---")
+                secundarios = []
+                continuar_secundarios = True
+                while continuar_secundarios:
+                    for i, a in enumerate(biblio.artistas):
+                        if i != idx_principal and a not in secundarios:
+                            print(f"{i}. {a.nombre}")
+                    print("-1. Terminar selección")
 
-            album = input("Álbum (opcional): ") or None
+                    idx_sec = pedir_entero("Artista secundario: ", min_val=-1, max_val=len(biblio.artistas) - 1)
+                    if idx_sec == -1:
+                        continuar_secundarios = False
+                    elif idx_sec == idx_principal:
+                        print(" El artista principal no puede ser secundario")
+                    elif biblio.artistas[idx_sec] in secundarios:
+                        print("El artista ya fue seleccionado antes")
+                    else:
+                        secundarios.append(biblio.artistas[idx_sec])
 
-            biblio.canciones_colab.append(
-                CancionColaboracion(titulo, biblio.artistas[idx_principal], duracion, genero, secundarios, album))
-            print(f" '{titulo}' de {biblio.artistas[idx_principal].nombre} registrada")
+                album = input("Álbum (opcional): ") or None
+
+                biblio.canciones_colab.append(
+                    CancionColaboracion(titulo, biblio.artistas[idx_principal], duracion, genero, secundarios, album))
+                print(f" '{titulo}' de {biblio.artistas[idx_principal].nombre} registrada")
+
+            except CancionDuplicadaError as e:
+                print(f" la canción {e} ya ha sido registrada en la biblioteca")
 
         elif opcion == "3":
             # Ver todas las canciones
@@ -626,20 +642,30 @@ def menu_playlists(biblio):
                 if len(biblio.playlists) == 0:
                     print(" No hay playlists creadas")
                     continue
-                if len(biblio.canciones_solo) == 0:
-                    print(" No hay canciones registradas")
+
+                todas_canciones = biblio.canciones_solo + biblio.canciones_colab
+                if len(todas_canciones) == 0:
+                    print("No hay canciones registradas")
                     continue
 
-                idx_p = pedir_entero(f"Playlist (0-{len(biblio.playlists) - 1}): ", min_val=0,)
+                print("\n--- Canciones Disponibles ---")
+                for i, c in enumerate(todas_canciones):
+                    if hasattr(c,'artistas_secundarios'):
+                        sec = ",".join([a.nombre for a in c.artistas_secundarios])
+                        print(f"{i}. {c.titulo} - {c.artista_principal.nombre} ft. {sec}")
+                    else:
+                        print(f"{i}. {c.titulo} - {c.artista_principal.nombre}")
+
+
+                idx_p = pedir_entero(f"Playlist (0-{len(biblio.playlists) - 1}): ", min_val=0, max_val=len(biblio.playlists) - 1)
 
                 if idx_p is None:
                     continue
-                idx_c = pedir_entero(f"Canción (0-{len(biblio.canciones_solo) - 1}): ", min_val=0, max_val=len(biblio.canciones_solo) - 1)
+                idx_c = pedir_entero(f"Canción (0-{len(biblio.canciones_solo) - 1}): ", min_val=0, max_val=len(todas_canciones) - 1)
 
                 if idx_c is None:
                     continue
 
-                from excepciones import CancionDuplicadaError
                 try:
                     biblio.playlists[idx_p] += biblio.canciones_solo[idx_c]
                     print(f"'{biblio.canciones_solo[idx_c].titulo}' añadida")

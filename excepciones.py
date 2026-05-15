@@ -16,7 +16,7 @@ class RecursoNoEncontradoError(Exception):
         self.identificador = identificador
 
 class CancionDuplicadaError(Exception):
-    #Se lanza al intentar añadir una canción duplicada a playlist o álbum
+    #Se lanza al intentar añadir una canción duplicada a playlist, álbum o biblioteca
     def __init__(self,titulo,destino):
         super().__init__(f"La canción '{titulo}' ya existe en {destino}")
         self.titulo = titulo
