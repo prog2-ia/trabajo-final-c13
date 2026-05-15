@@ -50,3 +50,9 @@ class SinCancionesError(Exception):
         super().__init__(f"No se puede reproducir {tipo} '{nombre}': no tiene canciones")
         self.tipo = tipo
         self.nombre = nombre
+
+class ArtistaDuplicadoError(Exception):
+    #Se lanza cuando se intenta registrar un artista que ya existe
+    def __init_(self,nombre):
+        super().__init__(f"El artista '{nombre}' ya está registrado en la plataforma")
+        self.nombre = nombre

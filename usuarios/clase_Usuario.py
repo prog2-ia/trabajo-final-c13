@@ -5,6 +5,11 @@ class Usuario:
     #Clase base para usuarios. **kwargs permite herencia múltiple con Mixins.
 
     def __init__(self, nombre_usuario, nombre_real, **kwargs):
+        #Validaciones con assert
+        assert isinstance(nombre_usuario,str) and len(nombre_usuario.strip()) > 0, \
+        "nombre_usuario debe ser un texto no vacío"
+        assert isinstance(nombre_real,str) and len(nombre_real.strip()) > 0, \
+        "nombre_real debe ser un texto no vacío"
 
         #**kwargs es CRUCIAL para UsuarioPremium (hereda Usuario + 2 Mixins).
         #Sin esto, los argumentos no llegarían a BeneficiosPremium y Notificaciones.
@@ -30,9 +35,9 @@ class Usuario:
         return len(self.playlists_usuario)
 
     def avanzar_cancion(self, cancion, playlist_origen=None):
-
-        #Gestiona salto de canción con límite. Registra en historial para estadísticas.
+        #Gestiona salto con límite y excepción personalizada
         #Verifica si tiene saltos infinitos (Premium) o límite (Gratis).
+        from excepciones import LimiteSaltosExcedidoError
 
         # Verifica si tiene saltos infinitos (Premium)
         if self.saltos_maximos == float('inf'):
@@ -43,8 +48,7 @@ class Usuario:
             tiene_limite = True
 
         if tiene_limite and self.saltos_actuales >= self.saltos_maximos:
-            print(f" Límite de {self.saltos_maximos} saltos alcanzado")
-            return False
+            raise LimiteSaltosExcedidoError(self.saltos_maximos,self.saltos_actuales)
 
         self.saltos_actuales += 1
         self.historial_saltos.append((cancion, playlist_origen))
@@ -63,10 +67,17 @@ class Usuario:
         print(f" Recargados {cantidad} saltos ({disponibles}/{self.saltos_maximos})")
 
     def escuchar_cancion(self, cancion):
-        #Registra reproducción: actualiza contador usuario Y de la canción.
-        self.canciones_escuchadas += 1
+        #Registra reproducción con validaciones
+        from excepciones import ValorInvalidoError
+
+        assert cancion is not None, "No se puede reproducir una canción nula"
+        assert hasattr(cancion,'titulo'), "El objeto no tiene atributo 'titulo'"
+        assert hasattr(cancion,'artista_principal'), "El objeto no tiene atributo 'artista_principal'"
+
+        self.canciones_escuchadas+=1
         cancion.repros()
         self.historial_canciones.append(cancion)
+
 
     def reproducir_playlist(self, playlist):
         #Delega reproducción a playlist (invierte dirección de llamada).
@@ -74,12 +85,14 @@ class Usuario:
 
     def cancion_mas_larga_escuchada(self):
         #Usa el operador > (__gt__) para encontrar la canción más larga del historial del usuario
+        from excepciones import SinCancionesError
+
         if not self.historial_canciones:
-            return None
+            raise SinCancionesError("historial de", self.nombre_usuario)
 
         mas_larga=self.historial_canciones[0]
         for c in self.historial_canciones[1:]:
-            if c>mas_larga:
+            if c>mas_larga: #Usa __gt__ explícitamente
                 mas_larga=c
         return mas_larga
 
