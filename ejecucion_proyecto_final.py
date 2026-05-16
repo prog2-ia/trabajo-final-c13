@@ -349,15 +349,21 @@ class BibliotecaMusical:
 def pedir_entero(mensaje, min_val=None, max_val=None):
     while True:
         try:
-
             valor = int(input(mensaje))
+
+            # 1. Primero verificamos si es menor al mínimo
             if min_val is not None and valor < min_val:
                 print(f"El valor debe ser mayor o igual a {min_val}")
-                continue
+                continue  # Reinicia el bucle sin devolver nada
+
+            # 2. Luego verificamos si es mayor al máximo
             if max_val is not None and valor > max_val:
                 print(f"El valor debe ser menor o igual a {max_val}")
-                continue
+                continue  # Reinicia el bucle sin devolver nada
+
+            # Si pasa ambas verificaciones, devolvemos el valor
             return valor
+
         except ValueError:
             print("Debes introducir un número entero válido")
         except KeyboardInterrupt:
@@ -391,10 +397,10 @@ def menu_artistas(biblio):
                     raise ArtistaDuplicadoError(nombre)
 
                 pais = input("País: ")
-                edad = pedir_entero("Edad: ", min_val=0)
+                edad = pedir_entero("Edad: ", min_val=0,max_val=105)
                 if edad is None:
                     continue
-                debut = pedir_entero("Año debut: ", min_val=1900)
+                debut = pedir_entero("Año debut: ", min_val=1900,max_val=2026)
                 if debut is None:
                     continue
 
@@ -426,7 +432,7 @@ def menu_artistas(biblio):
                 miembros = pedir_entero("Miembros: ", min_val=1)
                 if miembros is None:
                     continue
-                formacion = pedir_entero("Año formación: ", min_val=1900)
+                formacion = pedir_entero("Año formación: ", min_val=1900,max_val=2026)
                 if formacion is None:
                     continue
 
@@ -488,12 +494,12 @@ def menu_canciones(biblio):
                     album_obj = next((alb for alb in biblio.albumes if alb.titulo_album.lower()==album_nombre.lower()
                                       and alb.artista==biblio.artistas[idx]), None)
 
-                #Si no existe, lo creamos automáticamente
-                if not album_obj:
-                    anyo_actual=2026
-                    album_obj=Album(album_nombre,biblio.artistas[idx],anyo_actual)
-                    biblio.albumes.append(album_obj)
-                    print(f"Álbum '{album_nombre}' creado automáticamente")
+                    #Si no existe, lo creamos automáticamente
+                    if not album_obj:
+                        anyo_actual=2026
+                        album_obj=Album(album_nombre,biblio.artistas[idx],anyo_actual)
+                        biblio.albumes.append(album_obj)
+                        print(f"Álbum '{album_nombre}' creado automáticamente")
 
                 cancion=CancionSolo(titulo,biblio.artistas[idx],duracion,genero,album_obj)
                 biblio.canciones_solo.append(cancion)
@@ -504,7 +510,7 @@ def menu_canciones(biblio):
 
                 print(f"'{titulo}' de {biblio.artistas[idx].nombre} registrada")
             except CancionDuplicadaError as e:
-                print(f" La canción {e} ya ha sido registrada en la biblioteca")
+                print(f" {e}")
 
         elif opcion == "2":
             # Colaboración: artista principal + secundarios (lista)
@@ -530,7 +536,7 @@ def menu_canciones(biblio):
                 print("\n--- Selecciona artistas secundarios (escribe -1 para terminar) ---")
                 secundarios = []
                 continuar_secundarios = True
-                while continuar_secundarios:
+                while True:
                     for i, a in enumerate(biblio.artistas):
                         if i != idx_principal and a not in secundarios:
                             print(f"{i}. {a.nombre}")
@@ -538,7 +544,7 @@ def menu_canciones(biblio):
 
                     idx_sec = pedir_entero("Artista secundario: ", min_val=-1, max_val=len(biblio.artistas) - 1)
                     if idx_sec == -1:
-                        continuar_secundarios = False
+                        break
                     elif idx_sec == idx_principal:
                         print(" El artista principal no puede ser secundario")
                     elif biblio.artistas[idx_sec] in secundarios:
@@ -546,10 +552,20 @@ def menu_canciones(biblio):
                     else:
                         secundarios.append(biblio.artistas[idx_sec])
 
-                album = input("Álbum (opcional): ") or None
+                album_nombre = input("Álbum (opcional): ").strip()
+
+                album_obj=None
+                if album_nombre:
+                    album_obj=next((alb for alb in biblio.albumes
+                                    if alb.titulo_album.lower()==album_nombre.lower()
+                                    and alb.artista==biblio.artistas[idx_principal]),None)
+                    if not album_obj:
+                        album_obj=Album(album_nombre,biblio.artistas[idx_principal],2026)
+                        biblio.albumes.append(album_obj)
+                        print(f"Álbum '{album_nombre}' creado automáticamente")
 
                 biblio.canciones_colab.append(
-                    CancionColaboracion(titulo, biblio.artistas[idx_principal], duracion, genero, secundarios, album))
+                    CancionColaboracion(titulo, biblio.artistas[idx_principal], duracion, genero, secundarios, album_obj))
                 print(f" '{titulo}' de {biblio.artistas[idx_principal].nombre} registrada")
 
             except CancionDuplicadaError as e:
@@ -568,7 +584,7 @@ def menu_canciones(biblio):
 
 
 def menu_albumes(biblio):
-    #Menú para crear álbumes y añadir canciones.
+    """Menú para crear álbumes y añadir canciones."""
     continuar = True
     while continuar:
         print("\n" + "=" * 50)
@@ -588,7 +604,8 @@ def menu_albumes(biblio):
 
             idx = pedir_entero("Selecciona artista: ", min_val=0, max_val=len(biblio.artistas) - 1)
             titulo = input("Título álbum: ")
-            anyo = pedir_entero("Año: ", min_val=1900)
+
+            anyo = pedir_entero("Año: ", min_val=1900, max_val=2026)
 
             biblio.albumes.append(Album(titulo, biblio.artistas[idx], anyo))
             print(f" Álbum '{titulo}' creado")
@@ -597,14 +614,45 @@ def menu_albumes(biblio):
             # Añadir canción a álbum existente
             if len(biblio.albumes) == 0:
                 print(" No hay álbumes creados")
-            elif len(biblio.canciones_solo) == 0:
-                print(" No hay canciones registradas")
             else:
-                idx_a = pedir_entero(f"Álbum (0-{len(biblio.albumes) - 1}): ", min_val=0,
-                                     max_val=len(biblio.albumes) - 1)
-                idx_c = pedir_entero(f"Canción (0-{len(biblio.canciones_solo) - 1}): ", min_val=0,
-                                     max_val=len(biblio.canciones_solo) - 1)
-                biblio.albumes[idx_a].agrega_cancion(biblio.canciones_solo[idx_c])
+                todas_canciones = biblio.canciones_solo + biblio.canciones_colab
+                if len(todas_canciones) == 0:
+                    print(" No hay canciones registradas")
+                else:
+
+                    print("\n--- Álbumes Disponibles ---")
+                    for i, alb in enumerate(biblio.albumes):
+                        print(
+                            f"  {i}. {alb.titulo_album} - {alb.artista.nombre} ({alb.numero_canciones_album()} canciones)")
+
+                    idx_a = pedir_entero(f"Selecciona álbum (0-{len(biblio.albumes) - 1}): ", min_val=0,
+                                         max_val=len(biblio.albumes) - 1)
+
+                    print("\n--- Canciones Disponibles para añadir ---")
+                    for i, c in enumerate(todas_canciones):
+                        if hasattr(c, 'artistas_secundarios') and c.artistas_secundarios:
+                            sec = ", ".join([a.nombre for a in c.artistas_secundarios])
+                            print(f"  {i}. {c.titulo} - {c.artista_principal.nombre} ft. {sec}")
+                        else:
+                            print(f"  {i}. {c.titulo} - {c.artista_principal.nombre}")
+
+                    idx_c = pedir_entero(f"Selecciona canción (0-{len(todas_canciones) - 1}): ", min_val=0,
+                                         max_val=len(todas_canciones) - 1)
+
+
+                    cancion_a_anadir = todas_canciones[idx_c]
+                    album_seleccionado = biblio.albumes[idx_a]
+
+                    # Comprobar duplicados
+                    for c in album_seleccionado.canciones:
+                        if c.titulo.lower() == cancion_a_anadir.titulo.lower():
+                            print(
+                                f" La canción '{cancion_a_anadir.titulo}' ya está en el álbum '{album_seleccionado.titulo_album}'")
+                            break
+                    else:
+                        # Si no está duplicada, la añade
+                        album_seleccionado.agrega_cancion(cancion_a_anadir)
+                        print(f" '{cancion_a_anadir.titulo}' añadida al álbum")
 
         elif opcion == "3":
             # Ver álbumes creados
@@ -620,7 +668,7 @@ def menu_playlists(biblio):
     continuar = True
     while continuar:
         print("\n" + "=" * 50)
-        print("1. Crear  2. Añadir canción  3. Ver  4. Volver")
+        print("1. Crear  2. Añadir canción  3. Ver  4. Fusionar Playlists  5. Volver")
         print("=" * 50)
         opcion = input("Opción: ")
 
@@ -643,34 +691,40 @@ def menu_playlists(biblio):
                     print(" No hay playlists creadas")
                     continue
 
-                todas_canciones = biblio.canciones_solo + biblio.canciones_colab
-                if len(todas_canciones) == 0:
-                    print("No hay canciones registradas")
+
+                todas = biblio.canciones_solo + biblio.canciones_colab
+                if len(todas) == 0:
+                    print(" No hay canciones registradas")
                     continue
 
-                print("\n--- Canciones Disponibles ---")
-                for i, c in enumerate(todas_canciones):
-                    if hasattr(c,'artistas_secundarios'):
-                        sec = ",".join([a.nombre for a in c.artistas_secundarios])
-                        print(f"{i}. {c.titulo} - {c.artista_principal.nombre} ft. {sec}")
+                # Mostrar playlists disponibles
+                print("\n--- Playlists Disponibles ---")
+                for i, p in enumerate(biblio.playlists):
+                    print(f"  {i}. {p.nombre} ({len(p.canciones)} canciones)")
+
+                idx_p = pedir_entero(f"Selecciona playlist (0-{len(biblio.playlists) - 1}): ", min_val=0,
+                                     max_val=len(biblio.playlists) - 1)
+                if idx_p is None: continue
+
+
+                print("\n--- Canciones Disponibles Para Añadir ---")
+                for i, c in enumerate(todas):
+                    if hasattr(c, 'artistas_secundarios') and c.artistas_secundarios:
+                        sec = ", ".join([a.nombre for a in c.artistas_secundarios])
+                        print(f"  {i}. {c.titulo} - {c.artista_principal.nombre} ft. {sec}")
                     else:
-                        print(f"{i}. {c.titulo} - {c.artista_principal.nombre}")
+                        print(f"  {i}. {c.titulo} - {c.artista_principal.nombre}")
 
-
-                idx_p = pedir_entero(f"Playlist (0-{len(biblio.playlists) - 1}): ", min_val=0, max_val=len(biblio.playlists) - 1)
-
-                if idx_p is None:
-                    continue
-                idx_c = pedir_entero(f"Canción (0-{len(biblio.canciones_solo) - 1}): ", min_val=0, max_val=len(todas_canciones) - 1)
-
-                if idx_c is None:
-                    continue
+                idx_c = pedir_entero(f"Selecciona canción (0-{len(todas) - 1}): ", min_val=0,
+                                     max_val=len(todas) - 1)
+                if idx_c is None: continue
 
                 try:
-                    biblio.playlists[idx_p] += biblio.canciones_solo[idx_c]
-                    print(f"'{biblio.canciones_solo[idx_c].titulo}' añadida")
+
+                    biblio.playlists[idx_p] += todas[idx_c]
+                    print(f" '{todas[idx_c].titulo}' añadida a '{biblio.playlists[idx_p].nombre}'")
                 except CancionDuplicadaError as e:
-                    print(f"{e}")
+                    print(f" {e}")
 
             except (IndexError, ValueError) as e:
                 print(f" Índice inválido: {e}")
@@ -701,25 +755,39 @@ def menu_playlists(biblio):
                 print(f"Error al mostrar playlist: {e}")
 
 
-        elif opcion == "4": #Fusionar playlists
+        elif opcion == "4":  # Fusionar playlists
             try:
                 if len(biblio.playlists) < 2:
                     print("Necesitas al menos 2 playlists para fusionar")
                     continue
+
                 print("\n--- Playlists disponibles ---")
                 for i, p in enumerate(biblio.playlists):
-                    print(f"{i}. {p.nombre} ({len(p.canciones)} canciones)")
-                i1=pedir_entero("Índice Playlist 1: ",0,len(biblio.playlists)-1)
+                    print(f"  {i}. {p.nombre} ({len(p.canciones)} canciones)")
+
+                i1 = pedir_entero("Índice Playlist 1: ", 0, len(biblio.playlists) - 1)
                 if i1 is None:
                     continue
-                i2=pedir_entero("Índice Playlist 2: ",0,len(biblio.playlists)-1)
+                i2 = pedir_entero("Índice Playlist 2: ", 0, len(biblio.playlists) - 1)
                 if i2 is None:
                     continue
+
                 if i1 == i2:
-                    print("Selecciona dos playlists diferentes")
+                    print(" Selecciona dos playlists diferentes")
                     continue
 
-                fusion=biblio.playlists[i1]+biblio.playlists[i2]
+                playlist1 = biblio.playlists[i1]
+                playlist2 = biblio.playlists[i2]
+                nombre_fusion = f"{playlist1.nombre} + {playlist2.nombre}"
+
+
+                for p in biblio.playlists:
+                    if p.nombre == nombre_fusion:
+                        print(f" Ya existe una playlist llamada '{nombre_fusion}'")
+                        print("   No se creará una duplicada.")
+                        return  # Sale sin crear
+
+                fusion = playlist1 + playlist2
                 biblio.playlists.append(fusion)
                 print(f" Fusión creada: '{fusion.nombre}' ({len(fusion.canciones)} canciones)")
 
@@ -749,20 +817,26 @@ def menu_usuarios(biblio):
             print(f" {user} creado")
 
         elif opcion == "2":
-            # Crear usuario Premium (herencia múltiple con Mixins)
+            # Crear usuario Premium
             user = input("Usuario: ")
             real = input("Nombre real: ")
-            plan = input("Plan: ") or "Premium"
-            biblio.usuarios.append(UsuarioPremium(user, real, plan))
-            print(f" {user} creado")
+            # Plan fijo: "Premium"
+            biblio.usuarios.append(UsuarioPremium(user, real, "Premium"))
+            print(f" {user} creado (Plan: Premium)")
 
         elif opcion == "3":
             # Ver usuarios registrados
             for u in biblio.usuarios:
                 if isinstance(u, UsuarioGratis):
-                    u.info_cuenta()
+                    print(f"{u.nombre_usuario} ({u.nombre_real}) - Tipo: Gratis")
+                    print(f"  Canciones escuchadas: {u.canciones_escuchadas}")
+                    print(f"  Saltos: {u.saltos_actuales}/{u.saltos_maximos}")
                 else:
-                    u.info_completa()
+                    print(f"{u.nombre_usuario} ({u.nombre_real}) - Tipo: Premium")
+                    print(f"  Plan: {u.plan}")
+                    print(f"  Canciones escuchadas: {u.canciones_escuchadas}")
+                    print(f"  Saltos: Ilimitados")
+                print()
 
         elif opcion == "4":
             # Guardar playlist en usuario
@@ -771,38 +845,87 @@ def menu_usuarios(biblio):
             elif len(biblio.playlists) == 0:
                 print(" No hay playlists")
             else:
+                print("\n--- Usuarios Disponibles ---")
+                for i, u in enumerate(biblio.usuarios):
+                    print(f"  {i}. {u.nombre_usuario}")
+
                 idx_u = pedir_entero(f"Usuario (0-{len(biblio.usuarios) - 1}): ", min_val=0,
                                      max_val=len(biblio.usuarios) - 1)
+
+                print("\n--- Playlists Disponibles ---")
+                for i, p in enumerate(biblio.playlists):
+                    print(f"  {i}. {p.nombre} ({len(p.canciones)} canciones)")
+
                 idx_p = pedir_entero(f"Playlist (0-{len(biblio.playlists) - 1}): ", min_val=0,
                                      max_val=len(biblio.playlists) - 1)
-                biblio.usuarios[idx_u].guardar_playlist(biblio.playlists[idx_p])
+
+
+                usuario = biblio.usuarios[idx_u]
+                playlist = biblio.playlists[idx_p]
+
+                if hasattr(usuario, 'playlists_guardadas'):
+                    for p_guardada in usuario.playlists_guardadas:
+                        if p_guardada.nombre == playlist.nombre:
+                            print(
+                                f" El usuario '{usuario.nombre_usuario}' ya tiene guardada la playlist '{playlist.nombre}'")
+                            return
+
+                usuario.guardar_playlist(playlist)
+                print(f" '{playlist.nombre}' guardada en el usuario '{usuario.nombre_usuario}'")
 
         elif opcion == "5":
-            #Estadísticas personales del usuario
+            # Estadísticas personales del usuario
             if not biblio.usuarios:
                 print(" No hay usuarios registrados")
                 continue
 
-            idx=pedir_entero("Selecciona usuario:",0,len(biblio.usuarios)-1)
-            usuario=biblio.usuarios[idx]
+            # Menú visual de usuarios
+            print("\n--- Usuarios Disponibles ---")
+            for i, u in enumerate(biblio.usuarios):
+                print(f"  {i}. {u.nombre_usuario}")
+
+            idx = pedir_entero("Selecciona usuario:", 0, len(biblio.usuarios) - 1)
+            if idx is None:
+                continue
+            usuario = biblio.usuarios[idx]
 
             print(f"\n--- Estadísticas de {usuario.nombre_usuario} ---")
             print(f" Total canciones escuchadas: {usuario.canciones_escuchadas}")
             print(f" Saltos realizados: {len(usuario.historial_saltos)}")
 
-            #Canción más larga (usa operador >)
-            mas_larga=usuario.cancion_mas_larga_escuchada()
-            if mas_larga:
-                print(f"Tu canción más larga: '{mas_larga.titulo}'")
-            else:
+            # Canción más larga
+            try:
+                mas_larga = usuario.cancion_mas_larga_escuchada()
+                if mas_larga:
+                    print(f"Tu canción más larga: '{mas_larga.titulo}'")
+                else:
+                    print("Aún no has escuchado canciones")
+            except SinCancionesError:
                 print("Aún no has escuchado canciones")
 
-            #Canción más repetida
-            cancion_rep,veces=usuario.cancion_mas_escuchada()
-            if cancion_rep:
-                print(f" Tu canción más repetida: '{cancion_rep.titulo}' ({veces} veces)")
-            else:
+            # TODAS LAS CANCIONES REPETIDAS (más de 1 vez)
+            if not usuario.historial_canciones:
                 print("Aún no has repetido ninguna canción")
+            else:
+                # Contar repeticiones
+                contador = {}
+                for c in usuario.historial_canciones:
+                    clave = c.titulo.lower()
+                    contador[clave] = contador.get(clave, 0) + 1
+
+                # Filtrar solo las que se repitieron más de 1 vez
+                repetidas = {titulo: veces for titulo, veces in contador.items() if veces > 1}
+
+                if repetidas:
+                    print("\n📊 Canciones repetidas:")
+                    for titulo, veces in sorted(repetidas.items(), key=lambda x: x[1], reverse=True):
+                        # Buscar el objeto canción original
+                        for c in usuario.historial_canciones:
+                            if c.titulo.lower() == titulo:
+                                print(f"  • '{c.titulo}' - {veces} veces")
+                                break
+                else:
+                    print("Aún no has repetido ninguna canción")
 
         elif opcion == "6":
             continuar = False
@@ -943,22 +1066,6 @@ def menu_sobrecarga_operadores(biblio):
                 print(f" {c.duracion_seg}s - {c.titulo}")
 
         elif opcion == "7":
-            if len(biblio.playlists) < 2:
-                print("Necesitas al menos 2 playlists")
-                continue
-            print("\n--- Playlists disponibles ---")
-            for i, p in enumerate(biblio.playlists):
-                print(f"{i}. {p.nombre} ({len(p.canciones)} canciones)")
-            i1=pedir_entero("Índice Playlist 1: ",0,len(biblio.playlist)-1)
-            i2=pedir_entero("Índice Playlist 2: ",0,len(biblio.playlist)-1)
-            if i1 == i2:
-                print("Selecciona dos playlists diferentes")
-                continue
-            fusion = biblio.playlists[i1] + biblio.playlists[i2]
-            biblio.playlists.append(fusion)
-            print(f"Fusión creada: '{fusion.nombre}' ({len(fusion.canciones)} canciones)")
-
-        elif opcion == "8":
             if not biblio.albumes:
                 print(" No hay álbumes registrados")
                 continue
@@ -976,7 +1083,7 @@ def menu_sobrecarga_operadores(biblio):
             except Exception as e:
                 print(f"Error: {e}")
 
-        elif opcion == "9":
+        elif opcion == "8":
             continuar = False
         else:
             print("Opción no válida")
