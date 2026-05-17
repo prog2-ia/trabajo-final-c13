@@ -7,7 +7,7 @@ class Musico(EntidadMusical):
         # Paso los argumentos hacia arriba con super() y **kwargs.
         # Esto es clave para que cuando hagamos la herencia múltiple con 
         # ArtistaTrap, no se pierda ningún dato por el camino.
-        super().__init__(nombre=nombre**kwargs)
+        super().__init__(nombre=nombre, **kwargs)
         # es protegido y hay que tener cuidado se puede usar desde fuera pero con mucho cuidado
         self._nombre = nombre 
         # es privado el instrumento y solo se pueda gestionar desde 
