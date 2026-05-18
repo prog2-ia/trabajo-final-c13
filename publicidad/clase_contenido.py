@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any, Union
+__all__ = ['Podcast', 'Suscripcion']
 
 # Clase Abstracta 'ContenidoReproducible': Es la base para cualquier elemento 
 # que tenga un flujo de reproducción (canciones, podcasts, anuncios, etc.).
