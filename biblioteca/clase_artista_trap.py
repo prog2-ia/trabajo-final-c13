@@ -1,24 +1,27 @@
-# Me traigo a los "padres" de esta clase desde sus propios archivos
-# para que la herencia funcione aunque estén separados
 from .clase_musico import Musico
 from .clase_influencer import Influencer
+
 # Aquí aplico la herencia múltiple: un Artista de Trap es músico e influencer a la vez
 class ArtistaTrap(Musico, Influencer):
-    def __init__(self, nombre: str, instrumento: str, seguidores: int, red_social: str, estilo: str):
+    def __init__(self, nombre: str, instrumento: str, seguidores: int, red_social: str, estilo: str) -> None:
         # Uso super() para mandarle todos los datos a las clases de arriba.
         # Es la forma limpia de que Python reparta cada dato a su dueño (MRO)
-        # sin que se nos olvide inicializar nada por el camino.
         super().__init__(
             nombre=nombre, 
             instrumento=instrumento, 
             seguidores=seguidores, 
             red_social=red_social
         )
-        # este el toque único del trap que es el estilo 
-        self.__estilo = estilo
+        # Este es el toque único del trap: el estilo (encapsulado como privado)
+        self.__estilo: str = estilo
+
+    # Getter para poder acceder al estilo si lo necesitas desde fuera
+    @property
+    def estilo(self) -> str:
+        return self.__estilo
 
     def mostrar_detalle(self) -> str:
-        # Aquí aprovecho lo que ya saben hacer mis "padres" (Musico e Influencer)
-        # Guardo su información en una variable y luego le añado el estilo propio
-        detalle_padre = super().mostrar_detalle()
-        return f"{detalle_padre} | Estilo: {self.__estilo}"
+        # Si Musico e Influencer tienen implementado super().mostrar_detalle(),
+        # esta línea llamará a toda la cadena correctamente gracias al MRO.
+        detalle_padre: str = super().mostrar_detalle()
+        return f"{detalle_padre} | Estilo de Trap: {self.__estilo}"
