@@ -1,5 +1,5 @@
 from typing import Any
-from .clase_contenido_reproducible import ContenidoReproducible
+from .clase_contenido import ContenidoReproducible
 
 # La clase Anuncio representa la publicidad que escuchan los usuarios "Gratis"
 class Anuncio(ContenidoReproducible):

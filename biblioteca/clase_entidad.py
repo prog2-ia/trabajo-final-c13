@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Self
+from typing import Any
 
 # Esta es mi clase base. No voy a crear "Entidades Musicales" sueltas, 
 # sino que sirve para que otras clases hereden de ella.
@@ -16,7 +16,6 @@ class EntidadMusical(ABC):
     def nombre(self) -> str:
         return self._nombre
 
-    
     # Es como un contrato obligatorio. Cualquier artista que yo cree luego 
     # (un solista, un grupo...) TIENE que tener su propio "mostrar_detalle"
     # o el programa nos dará un error.
@@ -24,7 +23,6 @@ class EntidadMusical(ABC):
     def mostrar_detalle(self) -> str:
         pass    
 
-    
     # Lo usamos para saber si dos entidades son la misma por su nombre
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, EntidadMusical):
@@ -32,22 +30,18 @@ class EntidadMusical(ABC):
         return self.nombre.lower() == other.nombre.lower()
 
     # Lo usamos para saber cómo ordenar una lista de artistas alfabéticamente
-    def __lt__(self, other: object) -> bool | type(NotImplemented):
+    def __lt__(self, other: object) -> Any:
         if not isinstance(other, EntidadMusical):
             return NotImplemented
         return self.nombre.lower() < other.nombre.lower()
 
-    # Operador suma  para colaboraciones
-    def __add__(self, other: 'EntidadMusical') -> str | type(NotImplemented):
+    # Cambiamos el retorno a Any para unificar firmas de operadores mágicos
+    def __add__(self, other: object) -> Any:
         if isinstance(other, EntidadMusical):
-            nuevo_nombre: str = f"{self.nombre} ft. {other.nombre}"
-            # Al ser abstracta, esto tendrá sentido en las clases hijas
-            # que deberán manejar cómo se crea una colaboración.
-            print(f"Creando colaboración: {nuevo_nombre}")
-            return nuevo_nombre 
+            return f"{self.nombre} ft. {other.nombre}"
         return NotImplemented
 
-    # Operador de asignación compuesta (+=)
-    def __iadd__(self, extra_info: Any) -> Self:
+    # Cambiamos el retorno a Any para evitar conflictos estrictos con __add__
+    def __iadd__(self, extra_info: Any) -> Any:
         print(f"Actualizando entidad {self.nombre}...")
         return self

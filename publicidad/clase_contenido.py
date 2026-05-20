@@ -5,9 +5,7 @@ __all__ = ['Podcast', 'Suscripcion']
 # Clase Abstracta 'ContenidoReproducible': Es la base para cualquier elemento 
 # que tenga un flujo de reproducción (canciones, podcasts, anuncios, etc.).
 class ContenidoReproducible(ABC):
-    def __init__(self, duracion: int = 0, metadatos: list[str] = None, **kwargs: Any) -> None:
-        # Uso de **kwargs y super(): Esto es clave para la "herencia cooperativa".
-        # Permite que los argumentos viajen por la cadena de clases padres (MRO)
+    def __init__(self, duracion: int = 0, metadatos: list[str] | None = None, **kwargs: Any) -> None:
         self.duracion: int = duracion
         self.metadatos: list[str] = metadatos if metadatos else []
         super().__init__(**kwargs)
@@ -19,8 +17,7 @@ class ContenidoReproducible(ABC):
         pass
 
     # sobrecarga de operadores
-    def __add__(self, otro: object) -> int | type(NotImplemented):
-        # Suma las duraciones de dos contenidos reproducibles.
+    def __add__(self, otro: object) -> Any:
         if isinstance(otro, ContenidoReproducible):
             nueva_duracion: int = self.duracion + otro.duracion
             print(f"Calculando duración total combinada: {nueva_duracion} segundos.")

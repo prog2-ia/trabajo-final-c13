@@ -21,11 +21,7 @@ class Hardware(ABC):
 
     # sobrecarga de operadores
     # Tipamos con 'object' el operando
-    def __gt__(self, otro: object) -> bool | type[NotImplemented]:
-        # Compara si un hardware es más potente que otro
+    def __gt__(self, otro: object) -> Any:
         if not isinstance(otro, Hardware):
-            # Si no es un objeto de tipo Hardware, devolvemos la constante del sistema
             return NotImplemented 
-        
-        # Comparamos basándonos en el atributo potencia
         return self.potencia > otro.potencia
