@@ -4,10 +4,11 @@
 import os
 import pickle
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
-def inicializar_directorios():
+def inicializar_directorios() -> Dict[str,str]:
     #Creo la estructura de directorios para organizar los ficheros
-    directorios={
+    directorios=[str,str] = {
         'data':'data',
         'data/binarios':'data/binarios',
         'data/texto':'data/texto',
@@ -39,7 +40,8 @@ from canciones.clase_Cancion import Cancion
 from biblioteca import ArtistaTrap, Musico, Influencer
 from hardware import Dispositivo
 from publicidad import Anuncio
-from contenidos import Podcast, Suscripcion
+from contenidos.clase_podcast import Podcast
+from contenidos.clase_suscripcion import Suscripcion
 from excepciones import (
     LimiteSaltosExcedidoError,
     RecursoNoEncontradoError,
@@ -1007,8 +1009,8 @@ def menu_sobrecarga_operadores(biblio):
             p1 = pedir_entero("Potencia Dispositivo A (W): ", 0)
             p2 = pedir_entero("Potencia Dispositivo B (W): ", 0)
             
-            h1 = Dispositivo(nombre="Dispositivo A", potencia=p1)
-            h2 = Dispositivo(nombre="Dispositivo B", potencia=p2)
+            h1 = Dispositivo(nombre="Dispositivo A", tipo="Componente", potencia=p1 if p1 is not None else 0)
+            h2 = Dispositivo(nombre="Dispositivo B", tipo="Componente", potencia=p2 if p2 is not None else 0)
             
             if h1 > h2:
                 print(f"\n>>> RESULTADO: {h1.nombre} es más potente que {h2.nombre}")
@@ -1020,8 +1022,8 @@ def menu_sobrecarga_operadores(biblio):
             d1 = pedir_entero("Duración Podcast 1 (seg): ", 1)
             d2 = pedir_entero("Duración Podcast 2 (seg): ", 1)
             
-            pod1 = Podcast(titulo="Podcast A", duracion=d1)
-            pod2 = Podcast(titulo="Podcast B", duracion=d2)
+            pod1 = Podcast(titulo="Podcast A", anfitrion="Carla", capitulos=d1 if d1 is not None else 0)
+            pod2 = Podcast(titulo="Podcast B", anfitrion="Alejandro", capitulos=d2 if d2 is not None else 0)
             
             # Suma de duraciones
             total = pod1 + pod2
@@ -1089,7 +1091,7 @@ def menu_sobrecarga_operadores(biblio):
             print("Opción no válida")
 
 
-def menu_adicionales():
+def menu_adicionales() -> None:
     #Menú para probar clases adicionales.
     continuar = True
     while continuar:
@@ -1099,19 +1101,32 @@ def menu_adicionales():
         opcion = input("Opción: ")
 
         if opcion == "1":
-            pc = Dispositivo(input("Nombre: "), input("Tipo: "))
+            nom_disp = input("Nombre: ")
+            tip_disp = input("Tipo: ")
+            pc = Dispositivo(nombre=nom_disp, tipo=tip_disp)
             print(pc)
-            pc.subir_volumen(pedir_entero("Volumen: ", min_val=0, max_val=100))
+            vol = pedir_entero("Volumen: ", min_val=0, max_val=100)
+            if vol is not None:
+                pc.subir_volumen(vol)
         elif opcion == "2":
             sub = Suscripcion.crear_plan_estudiante()
-            sub.aplicar_descuento(pedir_entero("Descuento %: ", min_val=0, max_val=100))
+            desc = pedir_entero("Descuento %: ", min_val=0, max_val=100)
+            if desc is not None:
+                sub.aplicar_descuento(float(desc))
             print(sub)
         elif opcion == "3":
-            podcast = Podcast(input("Título: "), input("Anfitrión: "), pedir_entero("Capítulos: ", min_val=1))
-            podcast.reproducir()
+            tit_pod = input("Título: ")
+            anf_pod = input("Anfitrión: ")
+            caps_pod = pedir_entero("Capítulos: ", min_val=1)
+            if caps_pod is not None:
+                podcast = Podcast(titulo=tit_pod, anfitrion=anf_pod, capitulos=caps_pod)
+                podcast.reproducir()
         elif opcion == "4":
-            ad = Anuncio(input("Patrocinador: "), pedir_entero("Duración: ", min_val=1))
-            ad.reproducir()
+            patr_anuncio = input("Patrocinador: ")
+            dur_anuncio = pedir_entero("Duración: ", min_val=1)
+            if dur_anuncio is not None:
+                ad = Anuncio(patrocinador=patr_anuncio, duracion=dur_anuncio)
+                ad.reproducir()
         elif opcion == "5":
             continuar = False
 
