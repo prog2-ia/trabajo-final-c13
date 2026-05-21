@@ -6,9 +6,9 @@ import pickle
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-def inicializar_directorios() -> Dict[str,str]:
-    #Creo la estructura de directorios para organizar los ficheros
-    directorios=[str,str] = {
+def inicializar_directorios() -> dict[str, str]:
+    # Creo la estructura de directorios para organizar los ficheros
+    directorios: dict[str, str] = { # <-- Fíjate en el 'dict[str, str]'
         'data':'data',
         'data/binarios':'data/binarios',
         'data/texto':'data/texto',
