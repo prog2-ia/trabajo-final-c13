@@ -4,10 +4,13 @@ from .clase_contenido import ContenidoReproducible
 # La clase Anuncio representa la publicidad que escuchan los usuarios "Gratis"
 class Anuncio(ContenidoReproducible):
     def __init__(self, patrocinador: str, duracion: int, **kwargs: Any) -> None:
-        super().__init__(**kwargs)
+        # Pasamos de forma explícita la duracion al constructor del padre (ContenidoReproducible)
+        # y dejamos los kwargs para otros posibles atributos de la herencia.
+        super().__init__(duracion=duracion, **kwargs)
         # Encapsulamiento (Privado '__'): Protegemos los datos del anunciante.
         self.__patrocinador: str = patrocinador
-        self.__duracion: int = duracion
+        # Llamamos al setter interno para que aplique el reajuste automático de los 30s
+        self.duracion = duracion
 
     @property
     def patrocinador(self) -> str:

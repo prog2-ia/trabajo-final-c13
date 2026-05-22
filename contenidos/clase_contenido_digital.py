@@ -5,9 +5,14 @@ from typing import Any
 # solo sirve para que otras clases (como Podcast) hereden de ella.
 class ContenidoDigital(ABC):
     def __init__(self, **kwargs: Any) -> None:
-        # Usamos **kwargs y super() para que la herencia múltiple funcione.
-        # Esto permite que los datos "viajen" a la siguiente clase en la jerarquía
-        # sin que el programa se rompa si hay varios padres.
+        # Extraemos de forma segura los parámetros que pertenecen a la rama de 
+        # ContenidoReproducible para que no sigan viajando hacia arriba por el MRO
+        # y no terminen colándose en la clase base object.
+        kwargs.pop('duracion', None)
+        kwargs.pop('metadatos', None)
+        
+        # Ahora que el saco de kwargs está limpio de datos de contenido, 
+        # pasamos el resto hacia arriba con total seguridad
         super().__init__(**kwargs)
 
     # Método Abstracto: Es una obligación para las clases hijas.

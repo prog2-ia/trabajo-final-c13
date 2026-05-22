@@ -3,9 +3,11 @@
 from typing import Any
 class MediaPersona:
     def __init__(self, anfitrion: str, **kwargs: Any) -> None:
-        # Permite que, si esta clase se hereda junto con otra (como ContenidoDigital),
-        # los argumentos que no son 'anfitrion' sigan su camino hacia el siguiente padre.
+        # Guardamos el anfitrión de forma local en la clase de tu compañero
+        self.anfitrion = anfitrion
+        
+        # Extraemos el anfitrion de los kwargs para que no llegue a object.__init__
+        kwargs.pop('anfitrion', None)
+        
+        # Llamamos al super final completamente limpio
         super().__init__(**kwargs)
-        # usamos el (_) para indicar que el anfrition 
-        # siga su camino hacia el siguiente padre 
-        self._anfitrion: str = anfitrion

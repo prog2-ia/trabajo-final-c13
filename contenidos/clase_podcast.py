@@ -7,12 +7,16 @@ from .clase_mediaPersona import MediaPersona
 # Herencia Múltiple: Podcast hereda de dos clases distintas.
 class Podcast(ContenidoDigital, MediaPersona):
     def __init__(self, titulo: str, anfitrion: str, capitulos: int, **kwargs: Any) -> None:
-        # super().__init__ gestiona el MRO (Method Resolution Order).
-        super().__init__(anfitrion=anfitrion, **kwargs)
-        # Encapsulamiento Estricto (Privado)
-        self.__titulo: str = titulo          
-        self.__capitulos: int = capitulos    
-        self.__reproducciones: int = 0        
+        # 1. GUARDAMOS LA DURACIÓN DE FORMA LOCAL ANTES DE QUE SE LÍE EL SUPER()
+        self._duracion_podcast: int = capitulos
+        
+        # Guardas tus variables privadas del podcast normalmente
+        self.__titulo: str = titulo
+        self.__anfitrion: str = anfitrion
+        self.__capitulos: int = capitulos
+        
+        # Llamas al super enviando el anfitrión explícito para que no falle MediaPersona
+        super().__init__(duracion=capitulos, anfitrion=anfitrion, **kwargs)     
 
     @property
     def titulo(self) -> str:
@@ -36,6 +40,14 @@ class Podcast(ContenidoDigital, MediaPersona):
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(titulo='{self.__titulo}', anfitrion='{self._anfitrion}')"
+
+    def __add__(self, otro: object) -> Any:
+        if isinstance(otro, Podcast):
+            # Sumamos los capítulos usando la variable local blindada que creamos arriba
+            total_capitulos: int = self._duracion_podcast + otro._duracion_podcast
+            print(f"Calculando duración total combinada de podcasts: {total_capitulos} capítulos/segundos.")
+            return total_capitulos
+        return NotImplemented
 
     def reproducir(self) -> None:
         print(f"Abriendo reproductor para el podcast: {self.__titulo}...")

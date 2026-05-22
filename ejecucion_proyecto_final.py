@@ -1032,7 +1032,7 @@ def menu_sobrecarga_operadores(biblio):
         elif opcion == "4":
             # Demostración de ContenidoReproducible.__getitem__
             tags = ["Comercial", "Verano", "HD", "Estéreo"]
-            ad = Anuncio(titulo="Anuncio Pepsi", metadatos=tags)
+            ad = Anuncio(patrocinador="Pepsi", duracion=20, metadatos=tags)
             
             print(f"\nMetadatos disponibles: {tags}")
             idx = pedir_entero(f"Índice a consultar (0-{len(tags)-1}): ", 0, len(tags)-1)
@@ -1085,7 +1085,7 @@ def menu_sobrecarga_operadores(biblio):
             except Exception as e:
                 print(f"Error: {e}")
 
-        elif opcion == "8":
+        elif opcion == "9":
             continuar = False
         else:
             print("Opción no válida")
